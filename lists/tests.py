@@ -19,6 +19,10 @@ class HomePageTest(TestCase):
         response = self.client.post('/', data={'item_text': 'Nowy element listy'})
         self.assertIn('Nowy element listy', response.content.decode())
 
+        self.assertEqual(Item.objects.count(), 1)
+        new_item = Item.objects.first()
+        self.assertEqual(new_item.text, 'Nowy element listy')
+
     def test_saving_and_retrieving_items(self):
         first_item = Item()
         first_item.text = 'Absolutnie pierwszy element listy'
