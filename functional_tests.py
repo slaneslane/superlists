@@ -12,6 +12,12 @@ class NewVisitorTest(unittest.TestCase):
     # Usatysfakcjonowana kładzie się spać.
     self.browser.quit()
 
+  def check_for_row_in_list_table(self, row_text):
+    table = self.browser.find_element_by_id('id_list_table')
+    rows = table.find_elements_by_tag_name('tr')
+
+    self.assertIn(row_text, [row.text for row in rows])
+
   def test_can_start_a_list_and_retrive_it_later(self):
     # Magda dowiedziała się o nowej, wspaniałej aplikacji w postaci listy rzeczy do zrobienia.
     # Postanowiła więc przejść na stronę główną tej aplikacji.
@@ -33,10 +39,7 @@ class NewVisitorTest(unittest.TestCase):
     # Po wciśnięciu klawisza Enter strona została uaktualniona i wyświetla
     # "1: Kupić pawie pióra" jako element listy rzeczy do zrobienia.
     inputbox.send_keys(Keys.ENTER)
-    
-    table = self.browser.find_element_by_id('id_list_table')
-    rows = table.find_elements_by_tag_name('tr')
-    self.assertIn('1: Kupić pawie pióra', [row.text for row in rows])
+    self.check_for_row_in_list_table('1: Kupić pawie pióra')
 
     # Na stronie nadal znajduje się pole tekstowe zachęcające do podania kolejnego zadania.
     # Magda wpisała "Użyć pawich piór do zrobienia przynęty" (Magda jest niezwykle skrupulatna).
@@ -45,10 +48,8 @@ class NewVisitorTest(unittest.TestCase):
     inputbox.send_keys(Keys.ENTER)
 
     # Strona została ponownie uaktualniona i teraz wyświetla dwa elementy na liście rzeczy do zrobienia.
-    table = self.browser.find_element_by_id('id_list_table')
-    rows = table.find_elements_by_tag_name('tr')
-    self.assertIn('1: Kupić pawie pióra', [row.text for row in rows])
-    self.assertIn('2: Użyć pawich piór do zrobienia przynęty', [row.text for row in rows])
+    self.check_for_row_in_list_table('1: Kupić pawie pióra')
+    self.check_for_row_in_list_table('2: Użyć pawich piór do zrobienia przynęty')
 
     # Magda była ciekawa, czy witryna zapamięta jej listę. Zwróćiła uwagę na wygenerowany dla niej
     # unikatowy adres URL, obok którego znajduje się tekst z wyjaśnieniem.
