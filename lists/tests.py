@@ -40,3 +40,7 @@ class HomePageTest(TestCase):
         self.assertEqual(first_saved_item.text, 'Absolutnie pierwszy element listy')
         self.assertEqual(second_saved_item.text, 'Drugi element listy')
 
+    def test_home_page_only_saves_items_when_necessary(self):
+        request = HttpRequest()
+        home_page(request)
+        self.assertEqual(Item.objects.count(), 0)
