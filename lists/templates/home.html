@@ -4,7 +4,10 @@
 	</head>
 	<body>
 		<h1>Twoja lista rzeczy do zrobienia</h1>
-		<input id="id_new_item" placeholder="Wpisz rzeczy do zrobienia" />
+		<form method="POST">
+			<input name="item_text" id="id_new_item" placeholder="Wpisz rzeczy do zrobienia" />
+			{% csrf_token %}
+		</form>
 		<table id="id_list_table">
 		</table>
 	</body>
