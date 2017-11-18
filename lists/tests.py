@@ -15,10 +15,5 @@ class HomePageTest(TestCase):
         self.assertTemplateUsed(response, 'home.html')
 
     def test_home_page_can_save_a_POST_request(self):
-        request = HttpRequest()
-        request.method = 'POST'
-        request.POST['item_text'] = 'Nowy element listy'
-
-        response = home_page(request)
-
+        response = self.client.post('/', data={'item_text': 'Nowy element listy'})
         self.assertIn('Nowy element listy', response.content.decode())
