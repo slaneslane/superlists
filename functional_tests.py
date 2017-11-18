@@ -20,7 +20,7 @@ class NewVisitorTest(unittest.TestCase):
     # Zwróciła uwagę, że tytuł strony i nagłówek zawierają słowo Listy.
     self.assertIn('Listy', self.browser.title)
     header_text = self.browser.find_element_by_tag_name('h1').text
-    self.assertIn('Listy', header_text)
+    self.assertIn('lista', header_text)
 
     # Od razu zostaje zachęcona, aby wpisać rzecz do zrobienia.
     inputbox = self.browser.find_element_by_id('id_new_item')
@@ -36,7 +36,10 @@ class NewVisitorTest(unittest.TestCase):
     
     table = self.browser.find_element_by_id('id_list_table')
     rows = table.find_elements_by_tag_name('tr')
-    self.assertTrue(any(row.text == '1: Kupić pawie pióra' for row in rows))
+    self.assertTrue(
+        any(row.text == '1: Kupić pawie pióra' for row in rows),
+        "Nowy element nie znajduje się w tabeli!"
+    )
 
     # Na stronie nadal znajduje się pole tekstowe zachęcające do podania kolejnego zadania.
     # Magda wpisała "Użycie pawich piór do zrobienia przynęty" (Magda jest niezwykle skrupulatna).
