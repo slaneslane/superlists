@@ -1,5 +1,10 @@
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
+#for fixing the selenium 3 problem with reloading waiting page at the end of 5th chapter:
+from contextlib import contextmanager
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support.expected_conditions import staleness_of
+
 import unittest
 
 class NewVisitorTest(unittest.TestCase):
@@ -18,12 +23,19 @@ class NewVisitorTest(unittest.TestCase):
 
     self.assertIn(row_text, [row.text for row in rows])
 
+  @contextmanager
+  def wait_for_page_load(self, timeout=30):
+    old_page = self.browser.find_element_by_tag_name("html")
+    yield WebDriverWait(self, timeout).until(
+         staleness_of(old_page)
+    )
+
   def test_can_start_a_list_and_retrive_it_later(self):
     # Magda dowiedziała się o nowej, wspaniałej aplikacji w postaci listy rzeczy do zrobienia.
     # Postanowiła więc przejść na stronę główną tej aplikacji.
     self.browser.get('http://localhost:8000')
 
-    # Zwróciła uwagę, że tytuł strony i nagłówek zawierają słowo Listy.
+    # Zwróciła uwagę, że tytuł strony i nagłówek zawierają słowo 'Listy' i 'lista'.
     self.assertIn('Listy', self.browser.title)
     header_text = self.browser.find_element_by_tag_name('h1').text
     self.assertIn('lista', header_text)
@@ -39,7 +51,9 @@ class NewVisitorTest(unittest.TestCase):
     # Po wciśnięciu klawisza Enter strona została uaktualniona i wyświetla
     # "1: Kupić pawie pióra" jako element listy rzeczy do zrobienia.
     inputbox.send_keys(Keys.ENTER)
-    self.check_for_row_in_list_table('1: Kupić pawie pióra')
+
+    with self.wait_for_page_load(timeout=10):
+        self.check_for_row_in_list_table('1: Kupić pawie pióra')
 
     # Na stronie nadal znajduje się pole tekstowe zachęcające do podania kolejnego zadania.
     # Magda wpisała "Użyć pawich piór do zrobienia przynęty" (Magda jest niezwykle skrupulatna).
@@ -48,10 +62,11 @@ class NewVisitorTest(unittest.TestCase):
     inputbox.send_keys(Keys.ENTER)
 
     # Strona została ponownie uaktualniona i teraz wyświetla dwa elementy na liście rzeczy do zrobienia.
-    self.check_for_row_in_list_table('1: Kupić pawie pióra')
-    self.check_for_row_in_list_table('2: Użyć pawich piór do zrobienia przynęty')
+    with self.wait_for_page_load(timeout=10):
+        self.check_for_row_in_list_table('1: Kupić pawie pióra')
+        self.check_for_row_in_list_table('2: Użyć pawich piór do zrobienia przynęty')
 
-    # Magda była ciekawa, czy witryna zapamięta jej listę. Zwróćiła uwagę na wygenerowany dla niej
+    # Magda była ciekawa, czy witryna zapamięta jej listę. Zwróciła uwagę na wygenerowany dla niej
     # unikatowy adres URL, obok którego znajduje się tekst z wyjaśnieniem.
     self.fail('Zakończenie testu!')
 
@@ -59,6 +74,3 @@ class NewVisitorTest(unittest.TestCase):
 
 if __name__ == '__main__':
   unittest.main(warnings='ignore') 
-
-
-
