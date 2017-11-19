@@ -17,11 +17,16 @@ class HomePageTest(TestCase):
 
     def test_home_page_can_save_a_POST_request(self):
         response = self.client.post('/', data={'item_text': 'Nowy element listy'})
-        self.assertIn('Nowy element listy', response.content.decode())
 
         self.assertEqual(Item.objects.count(), 1)
         new_item = Item.objects.first()
         self.assertEqual(new_item.text, 'Nowy element listy')
+
+    def test_home_page_redirects_after_POST(self):
+        response = self.client.post('/', data={'item_text': 'Nowy element listy'})
+
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response['location'], '/')
 
     def test_saving_and_retrieving_items(self):
         first_item = Item()
@@ -44,3 +49,13 @@ class HomePageTest(TestCase):
         request = HttpRequest()
         home_page(request)
         self.assertEqual(Item.objects.count(), 0)
+
+    def test_home_page_displays_all_list_items(self):
+        Item.objects.create(text='itemey1')
+        Item.objects.create(text='itemey2')
+
+        request = HttpRequest()
+        response = home_page(request)
+
+        self.assertIn('itemey1', response.content.decode())
+        self.assertIn('itemey2', response.content.decode())        
