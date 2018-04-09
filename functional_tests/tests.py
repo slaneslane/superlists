@@ -53,6 +53,9 @@ class NewVisitorTest(LiveServerTestCase):
     # "1: Kupić pawie pióra" jako element listy rzeczy do zrobienia.
     inputbox.send_keys(Keys.ENTER)
 
+    magda_list_url = self.browser.current_url
+    self.assertRegex(magda_list_url, '/lists/.+')
+
     with self.wait_for_page_load(timeout=10):
         self.check_for_row_in_list_table('1: Kupić pawie pióra')
 
@@ -67,8 +70,34 @@ class NewVisitorTest(LiveServerTestCase):
         self.check_for_row_in_list_table('1: Kupić pawie pióra')
         self.check_for_row_in_list_table('2: Użyć pawich piór do zrobienia przynęty')
 
-    # Magda była ciekawa, czy witryna zapamięta jej listę. Zwróciła uwagę na wygenerowany dla niej
-    # unikatowy adres URL, obok którego znajduje się tekst z wyjaśnieniem.
-    self.fail('Zakończenie testu!')
+    # Teraz nowy użytkownik Szymon zaczyna korzystać z witryny.
 
-    # Przechodzi pod podany adres URL i widzi wyświetloną swoją listę rzeczy do zrobienia.
+    ## Używamy nowej sesji przeglądarki internetowej, aby mieć pewność, że żadne
+    ## informacje dotyczące Magdy nie zostaną ujawnione, na przykład przez cookies.
+    self.browser.quit()
+    self.browser = webdriver.Firefox()
+
+    # Szymon odwiedza stronę główną.
+    # Nie znajduje żadnych śladów listy Magdy.
+    self.browser.get(self.live_server_url)
+    page_text = self.browser.find_element_by_tag_name('body').text
+    self.assertNotIn('Kupić pawie pióra', page_text)
+    self.assertNotIn('Użyć pawich piór do zrobienia przynęty', page_text)
+
+    # Szymon tworzy własną listę, wprowadzając nowy element.
+    # Jego lista jest mniej interesująca niż lista Magdy...
+    inputbox = self.browser.find_element_by_id('id_new_item')
+    inputbox.send_keys('Kupić mleko')
+    inputbox.send_keys(Keys.ENTER)
+
+    # Szymon otrzymuje unikatowy adres URL prowadzący do listy.
+    szymon_list_url = self.browser.current_url
+    self.assertRegex(szymon_list_url, '/lists/.+')
+    self.assertNotEqual(szymon_list_url, magda_list_url)
+
+    # Ponownie nie ma żadnego śladu po Magdzie.
+    page_text = self.browser.find_element_by_tag_name('body').text
+    self.assertNotIn('Kupić pawie pióra', page_text)
+    self.assertIn('Kupić mleko', page_text)
+
+    # Usatysfakcjonowani, oboje kładą się spać.
