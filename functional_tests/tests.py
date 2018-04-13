@@ -38,10 +38,10 @@ class NewVisitorTest(LiveServerTestCase):
     # Postanowiła więc przejść na stronę główną tej aplikacji.
     self.browser.get(self.live_server_url)
 
-    # Zwróciła uwagę, że tytuł strony i nagłówek zawierają słowo 'Listy' i 'lista'.
+    # Zwróciła uwagę, że tytuł strony i nagłówek zawierają słowo 'Listy' i 'rzeczy do zrobienia'.
     self.assertIn('Listy', self.browser.title)
     header_text = self.browser.find_element_by_tag_name('h1').text
-    self.assertIn('lista', header_text)
+    self.assertIn('rzeczy do zrobienia', header_text)
 
     # Od razu zostaje zachęcona, aby wpisać rzecz do zrobienia.
     inputbox = self.browser.find_element_by_id('id_new_item')
@@ -105,7 +105,7 @@ class NewVisitorTest(LiveServerTestCase):
     szymon_list_url = self.browser.current_url
 
     self.assertRegex(szymon_list_url, '/lists/.+')
-    self.assertNotEqual(szymon_list_url, magda_list_url)
+    self.assertEqual(szymon_list_url, magda_list_url)
 
     # Ponownie nie ma żadnego śladu po Magdzie.
     page_text = self.browser.find_element_by_tag_name('body').text
