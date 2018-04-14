@@ -7,8 +7,13 @@ from selenium.webdriver.support import expected_conditions as EC
 from contextlib import contextmanager
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support.expected_conditions import staleness_of
+#fixing selenium 3 problem with reloading waiting page up to the new book:
+#from selenium.common.exceptions import WebDriverException
 
 import unittest
+
+#import time
+#MAX_WAIT = 10
 
 class NewVisitorTest(LiveServerTestCase):
 
@@ -19,6 +24,19 @@ class NewVisitorTest(LiveServerTestCase):
   def tearDown(self):
     # Usatysfakcjonowana kładzie się spać.
     self.browser.quit()
+
+#  def wait_for_row_in_list_table(self, row_text):
+#      start_time = time.time()
+#      while True:
+#          try:
+#              table = self.browser.find_element_by_id('id_list_table')
+#              rows = table.find_element_by_tag_name('tr')
+#              self.assertIn(row_text, [row.text for row in rows])
+#              return
+#          except (AssertionError, WebDriverException) as e:
+#              if time.time() - start_time > MAX_WAIT:
+#                  raise e
+#              time.sleep(0.5 )
 
   def check_for_row_in_list_table(self, row_text):
     table = self.browser.find_element_by_id('id_list_table')
@@ -54,6 +72,7 @@ class NewVisitorTest(LiveServerTestCase):
     # Po wciśnięciu klawisza Enter strona została uaktualniona i wyświetla
     # "1: Kupić pawie pióra" jako element listy rzeczy do zrobienia.
     inputbox.send_keys(Keys.ENTER)
+#    self.wait_for_row_in_list_table('1: Kupić pawie pióra')
 
     #for fixing the selenium 3 problem with redirecting page at the begining of 6th chapter:
     wait = WebDriverWait(self.browser, 3)
