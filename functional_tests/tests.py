@@ -18,12 +18,16 @@ import unittest
 class NewVisitorTest(LiveServerTestCase):
 
   def setUp(self):
+    # Rozpoczynamy nową sesję przeglądarki.
     self.browser = webdriver.Firefox()
     self.browser.implicitly_wait(3)
 
+
   def tearDown(self):
-    # Usatysfakcjonowana kładzie się spać.
+    # Na koniec wyłączamy sesję przeglądarki aby mieć pewność, że żadne
+    # informacje dotyczące poprzedniego użytkownika nie zostaną ujawnione, na przykład przez cookies.
     self.browser.quit()
+
 
 #  def wait_for_row_in_list_table(self, row_text):
 #      start_time = time.time()
@@ -38,10 +42,10 @@ class NewVisitorTest(LiveServerTestCase):
 #                  raise e
 #              time.sleep(0.5 )
 
+
   def check_for_row_in_list_table(self, row_text):
     table = self.browser.find_element_by_id('id_list_table')
     rows = table.find_elements_by_tag_name('tr')
-
     self.assertIn(row_text, [row.text for row in rows])
 
   @contextmanager
@@ -51,19 +55,24 @@ class NewVisitorTest(LiveServerTestCase):
          staleness_of(old_page)
     )
 
-  def test_can_start_a_list_and_retrive_it_later(self):
+
+  def test_can_start_a_list_for_one_user(self):
+
     # Magda dowiedziała się o nowej, wspaniałej aplikacji w postaci listy rzeczy do zrobienia.
-    # Postanowiła więc przejść na stronę główną tej aplikacji.
+    # Przechodzi więc na stronę główną tej aplikacji.
     self.browser.get(self.live_server_url)
 
-    # Zwróciła uwagę, że tytuł strony i nagłówek zawierają słowo 'Listy' i 'rzeczy do zrobienia'.
+    # Magda zwróciła uwagę, że tytuł strony i nagłówek zawierają słowo 'Listy' i 'rzeczy do zrobienia'.
     self.assertIn('Listy', self.browser.title)
     header_text = self.browser.find_element_by_tag_name('h1').text
     self.assertIn('rzeczy do zrobienia', header_text)
 
     # Od razu zostaje zachęcona, aby wpisać rzecz do zrobienia.
     inputbox = self.browser.find_element_by_id('id_new_item')
-    self.assertEqual(inputbox.get_attribute('placeholder'), 'Wpisz rzeczy do zrobienia')
+    self.assertEqual(
+        inputbox.get_attribute('placeholder'),
+        'Wpisz rzeczy do zrobienia'
+    )
 
     # W polu tekstowym wpisała "Kupić pawie pióra"
     # (hobby Magdy polegające na tworzeniu ozdobnych przynęt).
@@ -76,10 +85,11 @@ class NewVisitorTest(LiveServerTestCase):
 
     #for fixing the selenium 3 problem with redirecting page at the begining of 6th chapter:
     wait = WebDriverWait(self.browser, 3)
-    wait.until(EC.title_is('Lista rzeczy do zrobienia'))
+    wait.until(
+            EC.title_is('Lista rzeczy do zrobienia')
+    )
 
     magda_list_url = self.browser.current_url
-    #print(magda_list_url)
 
     self.assertRegex(magda_list_url, '/lists/.+')
 
@@ -96,12 +106,9 @@ class NewVisitorTest(LiveServerTestCase):
     	self.check_for_row_in_list_table('1: Kupić pawie pióra')
     	self.check_for_row_in_list_table('2: Użyć pawich piór do zrobienia przynęty')
 
-    # Teraz nowy użytkownik Szymon zaczyna korzystać z witryny.
 
-    ## Używamy nowej sesji przeglądarki internetowej, aby mieć pewność, że żadne
-    ## informacje dotyczące Magdy nie zostaną ujawnione, na przykład przez cookies.
-    self.browser.quit()
-    self.browser = webdriver.Firefox()
+  def test_multiple_users_can_start_lists_at_different_urls(self):
+    # Teraz nowy użytkownik Szymon zaczyna korzystać z witryny.
 
     # Szymon odwiedza stronę główną.
     # Nie znajduje żadnych śladów listy Magdy.
@@ -118,13 +125,17 @@ class NewVisitorTest(LiveServerTestCase):
 
     #for fixing the selenium 3 problem with redirecting page at the begining of 6th chapter:
     wait = WebDriverWait(self.browser, 3)
-    wait.until(EC.title_is('Lista rzeczy do zrobienia'))
+    wait.until(
+            EC.title_is('Lista rzeczy do zrobienia')
+    )
 
     # Szymon otrzymuje unikatowy adres URL prowadzący do listy.
     szymon_list_url = self.browser.current_url
 
     self.assertRegex(szymon_list_url, '/lists/.+')
+    self.fail('Bierz się dalej do roboty!')
     self.assertEqual(szymon_list_url, magda_list_url)
+
 
     # Ponownie nie ma żadnego śladu po Magdzie.
     page_text = self.browser.find_element_by_tag_name('body').text
