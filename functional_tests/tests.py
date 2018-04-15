@@ -133,7 +133,6 @@ class NewVisitorTest(LiveServerTestCase):
     szymon_list_url = self.browser.current_url
 
     self.assertRegex(szymon_list_url, '/lists/.+')
-    self.fail('Bierz się dalej do roboty!')
     self.assertEqual(szymon_list_url, magda_list_url)
 
 
@@ -143,3 +142,4 @@ class NewVisitorTest(LiveServerTestCase):
     self.assertIn('Kupić mleko', page_text)
 
     # Usatysfakcjonowani, oboje kładą się spać.
+    self.fail('Koniec testu!')
