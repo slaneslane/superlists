@@ -108,7 +108,21 @@ class NewVisitorTest(LiveServerTestCase):
 
 
   def test_multiple_users_can_start_lists_at_different_urls(self):
+
+    # Magda odpala stronę aplikacji.
+    self.browser.get(self.live_server_url)
+    inputbox = self.browser.find_element_by_id('id_new_item')
+    inputbox.send_keys('Kupić pawie pióra')
+    inputbox.send_keys(Keys.ENTER)
+    self.check_for_row_in_list_table('1: Kupić pawie pióra')
+
+    # Zauważa, że jej lista ma unikalny adres URL.
+    magda_list_url = self.browser.current_url
+    self.assertRegex(magda_list_url, '/lists/.+')
+
     # Teraz nowy użytkownik Szymon zaczyna korzystać z witryny.
+    self.browser.quit()
+    self.browser = webdriver.Firefox()
 
     # Szymon odwiedza stronę główną.
     # Nie znajduje żadnych śladów listy Magdy.
@@ -129,11 +143,13 @@ class NewVisitorTest(LiveServerTestCase):
             EC.title_is('Lista rzeczy do zrobienia')
     )
 
+    self.check_for_row_in_list_table('1: Kupić mleko')
+
     # Szymon otrzymuje unikatowy adres URL prowadzący do listy.
     szymon_list_url = self.browser.current_url
 
     self.assertRegex(szymon_list_url, '/lists/.+')
-    self.assertEqual(szymon_list_url, magda_list_url)
+    self.assertNotEqual(szymon_list_url, magda_list_url)
 
 
     # Ponownie nie ma żadnego śladu po Magdzie.
@@ -142,4 +158,4 @@ class NewVisitorTest(LiveServerTestCase):
     self.assertIn('Kupić mleko', page_text)
 
     # Usatysfakcjonowani, oboje kładą się spać.
-    self.fail('Koniec testu!')
+    #self.fail('Koniec testu!')
