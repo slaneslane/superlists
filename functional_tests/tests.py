@@ -84,13 +84,13 @@ class NewVisitorTest(LiveServerTestCase):
 #    self.wait_for_row_in_list_table('1: Kupić pawie pióra')
 
     #for fixing the selenium 3 problem with redirecting page at the begining of 6th chapter:
-    WebDriverWait(self.browser, 2).until(
-		EC.title_is('Lista rzeczy do zrobienia')
-    )
-	# Wpisane przez Magdę hasło pojawia się na jej liście.
-	self.check_for_row_in_list_table('1: Kupić pawie pióra')
+#    WebDriverWait(self.browser, 2).until(
+#        EC.title_is('Lista rzeczy do zrobienia')
+#    )
+    # Wpisane przez Magdę hasło pojawia się na jej liście.
+    self.check_for_row_in_list_table('1: Kupić pawie pióra')
 
-	# Lista Magdy ma swój własny URL.
+    # Lista Magdy ma swój własny URL.
     magda_list_url = self.browser.current_url
     self.assertRegex(magda_list_url, '/lists/.+')
 
@@ -141,10 +141,10 @@ class NewVisitorTest(LiveServerTestCase):
     inputbox.send_keys(Keys.ENTER)
 
     #for fixing the selenium 3 problem with redirecting page at the begining of 6th chapter:
-    WebDriverWait(self.browser, 2).until(
-		EC.title_is('Lista rzeczy do zrobienia')
-    )
-	# Wpisane przez Szymona hasło pojawia się na jego liście.
+#    WebDriverWait(self.browser, 2).until(
+#        EC.title_is('Lista rzeczy do zrobienia')
+#    )
+    # Wpisane przez Szymona hasło pojawia się na jego liście.
     self.check_for_row_in_list_table('1: Kupić mleko')
 
     # Szymon otrzymuje unikatowy adres URL prowadzący do listy.
