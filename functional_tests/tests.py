@@ -62,7 +62,7 @@ class NewVisitorTest(LiveServerTestCase):
 
     # Wpisane przez Magdę hasło pojawia się na jej liście.
     with self.wait_for_page_load(timeout=2):
-	    self.check_for_row_in_list_table('1: Kupić pawie pióra')
+        self.check_for_row_in_list_table('1: Kupić pawie pióra')
 
     # Lista Magdy ma swój własny URL.
     magda_list_url = self.browser.current_url
