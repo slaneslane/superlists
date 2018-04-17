@@ -1,19 +1,13 @@
 from django.test import LiveServerTestCase
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
-#for fixing the selenium 3 problem with redirecting page at the begining of 6th chapter:
-from selenium.webdriver.support import expected_conditions as EC
+
 #for fixing the selenium 3 problem with reloading waiting page at the end of 5th chapter:
 from contextlib import contextmanager
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support.expected_conditions import staleness_of
-#fixing selenium 3 problem with reloading waiting page up to the new book:
-#from selenium.common.exceptions import WebDriverException
 
 import unittest
-
-#import time
-#MAX_WAIT = 10
 
 class NewVisitorTest(LiveServerTestCase):
 
@@ -22,26 +16,10 @@ class NewVisitorTest(LiveServerTestCase):
     self.browser = webdriver.Firefox()
     self.browser.implicitly_wait(3)
 
-
   def tearDown(self):
     # Na koniec wyłączamy sesję przeglądarki aby mieć pewność, że żadne
     # informacje dotyczące poprzedniego użytkownika nie zostaną ujawnione, na przykład przez cookies.
     self.browser.quit()
-
-
-#  def wait_for_row_in_list_table(self, row_text):
-#      start_time = time.time()
-#      while True:
-#          try:
-#              table = self.browser.find_element_by_id('id_list_table')
-#              rows = table.find_element_by_tag_name('tr')
-#              self.assertIn(row_text, [row.text for row in rows])
-#              return
-#          except (AssertionError, WebDriverException) as e:
-#              if time.time() - start_time > MAX_WAIT:
-#                  raise e
-#              time.sleep(0.5 )
-
 
   def check_for_row_in_list_table(self, row_text):
     table = self.browser.find_element_by_id('id_list_table')
@@ -81,14 +59,10 @@ class NewVisitorTest(LiveServerTestCase):
     # Po wciśnięciu klawisza Enter strona została uaktualniona i wyświetla
     # "1: Kupić pawie pióra" jako element listy rzeczy do zrobienia.
     inputbox.send_keys(Keys.ENTER)
-#    self.wait_for_row_in_list_table('1: Kupić pawie pióra')
 
-    #for fixing the selenium 3 problem with redirecting page at the begining of 6th chapter:
-#    WebDriverWait(self.browser, 2).until(
-#        EC.title_is('Lista rzeczy do zrobienia')
-#    )
     # Wpisane przez Magdę hasło pojawia się na jej liście.
-    self.check_for_row_in_list_table('1: Kupić pawie pióra')
+    with self.wait_for_page_load(timeout=2):
+	    self.check_for_row_in_list_table('1: Kupić pawie pióra')
 
     # Lista Magdy ma swój własny URL.
     magda_list_url = self.browser.current_url
@@ -115,7 +89,8 @@ class NewVisitorTest(LiveServerTestCase):
     inputbox.send_keys(Keys.ENTER)
 
     # Wpisane przez Magdę hasło pojawia się na jej liście.
-    self.check_for_row_in_list_table('1: Kupić pawie pióra')
+    with self.wait_for_page_load(timeout=2):
+        self.check_for_row_in_list_table('1: Kupić pawie pióra')
 
     # Zauważa, że jej lista ma unikalny adres URL.
     magda_list_url = self.browser.current_url
@@ -139,13 +114,10 @@ class NewVisitorTest(LiveServerTestCase):
     inputbox = self.browser.find_element_by_id('id_new_item')
     inputbox.send_keys('Kupić mleko')
     inputbox.send_keys(Keys.ENTER)
-
-    #for fixing the selenium 3 problem with redirecting page at the begining of 6th chapter:
-#    WebDriverWait(self.browser, 2).until(
-#        EC.title_is('Lista rzeczy do zrobienia')
-#    )
+    
     # Wpisane przez Szymona hasło pojawia się na jego liście.
-    self.check_for_row_in_list_table('1: Kupić mleko')
+    with self.wait_for_page_load(timeout=2):
+        self.check_for_row_in_list_table('1: Kupić mleko')
 
     # Szymon otrzymuje unikatowy adres URL prowadzący do listy.
     szymon_list_url = self.browser.current_url
