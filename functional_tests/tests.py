@@ -12,13 +12,13 @@ import unittest
 class NewVisitorTest(LiveServerTestCase):
 
   def setUp(self):
-    # Rozpoczynamy nową sesję przeglądarki.
+    # Rozpoczynamy nowa sesje przegladarki.
     self.browser = webdriver.Firefox()
     self.browser.implicitly_wait(3)
 
   def tearDown(self):
-    # Na koniec wyłączamy sesję przeglądarki aby mieć pewność, że żadne
-    # informacje dotyczące poprzedniego użytkownika nie zostaną ujawnione, na przykład przez cookies.
+    # Na koniec wylaczamy sesje przegladarki aby miec pewnosc, ze zadne
+    # informacje dotyczace poprzedniego uzytkownika nie zostana ujawnione, na przyklad przez cookies.
     self.browser.quit()
 
   def check_for_row_in_list_table(self, row_text):
@@ -36,100 +36,100 @@ class NewVisitorTest(LiveServerTestCase):
 
   def test_can_start_a_list_for_one_user(self):
 
-    # Magda dowiedziała się o nowej, wspaniałej aplikacji w postaci listy rzeczy do zrobienia.
-    # Przechodzi więc na stronę główną tej aplikacji.
+    # Magda dowiedziala sie o nowej, wspanialej aplikacji w postaci listy rzeczy do zrobienia.
+    # Przechodzi wiec na strone glowna tej aplikacji.
     self.browser.get(self.live_server_url)
 
-    # Magda zwróciła uwagę, że tytuł strony i nagłówek zawierają słowo 'Listy' i 'rzeczy do zrobienia'.
+    # Magda zwrocila uwage, ze tytul strony i naglowek zawieraja slowo 'Listy' i 'rzeczy do zrobienia'.
     self.assertIn('Listy', self.browser.title)
     header_text = self.browser.find_element_by_tag_name('h1').text
     self.assertIn('rzeczy do zrobienia', header_text)
 
-    # Od razu zostaje zachęcona, aby wpisać rzecz do zrobienia.
+    # Od razu zostaje zachecona, aby wpisac rzecz do zrobienia.
     inputbox = self.browser.find_element_by_id('id_new_item')
     self.assertEqual(
         inputbox.get_attribute('placeholder'),
         'Wpisz rzeczy do zrobienia'
     )
 
-    # W polu tekstowym wpisała "Kupić pawie pióra"
-    # (hobby Magdy polegające na tworzeniu ozdobnych przynęt).
-    inputbox.send_keys('Kupić pawie pióra')
+    # W polu tekstowym wpisala "Kupic pawie piora"
+    # (hobby Magdy polegajace na tworzeniu ozdobnych przynet).
+    inputbox.send_keys('Kupic pawie piora')
 
-    # Po wciśnięciu klawisza Enter strona została uaktualniona i wyświetla
-    # "1: Kupić pawie pióra" jako element listy rzeczy do zrobienia.
+    # Po wcisnieciu klawisza Enter strona zostala uaktualniona i wyswietla
+    # "1: Kupic pawie piora" jako element listy rzeczy do zrobienia.
     inputbox.send_keys(Keys.ENTER)
 
-    # Wpisane przez Magdę hasło pojawia się na jej liście.
+    # Wpisane przez Magde haslo pojawia sie na jej liscie.
     with self.wait_for_page_load(timeout=2):
-        self.check_for_row_in_list_table('1: Kupić pawie pióra')
+        self.check_for_row_in_list_table('1: Kupic pawie piora')
 
-    # Lista Magdy ma swój własny URL.
+    # Lista Magdy ma swoj wlasny URL.
     magda_list_url = self.browser.current_url
     self.assertRegex(magda_list_url, '/lists/.+')
 
-    # Na stronie nadal znajduje się pole tekstowe zachęcające do podania kolejnego zadania.
-    # Magda wpisała "Użyć pawich piór do zrobienia przynęty" (Magda jest niezwykle skrupulatna).
+    # Na stronie nadal znajduje sie pole tekstowe zachecajace do podania kolejnego zadania.
+    # Magda wpisala "Uzyc pawich pior do zrobienia przynety" (Magda jest niezwykle skrupulatna).
     inputbox = self.browser.find_element_by_id('id_new_item')
-    inputbox.send_keys('Użyć pawich piór do zrobienia przynęty')
+    inputbox.send_keys('Uzyc pawich pior do zrobienia przynety')
     inputbox.send_keys(Keys.ENTER)
 
-    # Strona została ponownie uaktualniona i teraz wyświetla dwa elementy na liście rzeczy do zrobienia.
+    # Strona zostala ponownie uaktualniona i teraz wyświetla dwa elementy na liscie rzeczy do zrobienia.
     with self.wait_for_page_load(timeout=2):
-    	self.check_for_row_in_list_table('1: Kupić pawie pióra')
-    	self.check_for_row_in_list_table('2: Użyć pawich piór do zrobienia przynęty')
+        self.check_for_row_in_list_table('1: Kupic pawie piora')
+        self.check_for_row_in_list_table('2: Uzyc pawich pior do zrobienia przynety')
 
 
   def test_multiple_users_can_start_lists_at_different_urls(self):
 
-    # Magda odpala stronę aplikacji i wpisuje hasło generując nową listę.
+    # Magda odpala strone aplikacji i wpisuje haslo generujac nowa liste.
     self.browser.get(self.live_server_url)
     inputbox = self.browser.find_element_by_id('id_new_item')
-    inputbox.send_keys('Kupić pawie pióra')
+    inputbox.send_keys('Kupic pawie piora')
     inputbox.send_keys(Keys.ENTER)
 
-    # Wpisane przez Magdę hasło pojawia się na jej liście.
+    # Wpisane przez Magde haslo pojawia sie na jej liscie.
     with self.wait_for_page_load(timeout=2):
-        self.check_for_row_in_list_table('1: Kupić pawie pióra')
+        self.check_for_row_in_list_table('1: Kupic pawie piora')
 
-    # Zauważa, że jej lista ma unikalny adres URL.
+    # Zauwaza, ze jej lista ma unikalny adres URL.
     magda_list_url = self.browser.current_url
     self.assertRegex(magda_list_url, '/lists/.+')
 
-    # Magda wyłącza swoją przeglądarkę.
+    # Magda wylacza swoja przegladarke.
     self.browser.quit()
 
-    # Teraz nowy użytkownik Szymon zaczyna korzystać z witryny.
+    # Teraz nowy uzytkownik Szymon zaczyna korzystac z witryny.
     self.browser = webdriver.Firefox()
 
-    # Szymon odwiedza stronę główną.
-    # Nie znajduje żadnych śladów listy Magdy.
+    # Szymon odwiedza strone glowna.
+    # Nie znajduje zadnych sladow listy Magdy.
     self.browser.get(self.live_server_url)
     page_text = self.browser.find_element_by_tag_name('body').text
-    self.assertNotIn('Kupić pawie pióra', page_text)
-    self.assertNotIn('Użyć pawich piór do zrobienia przynęty', page_text)
+    self.assertNotIn('Kupic pawie piora', page_text)
+    self.assertNotIn('Uzyc pawich pior do zrobienia przynety', page_text)
 
-    # Szymon tworzy własną listę, wprowadzając nowy element.
-    # Jego lista jest mniej interesująca niż lista Magdy...
+    # Szymon tworzy wlasna liste, wprowadzajac nowy element.
+    # Jego lista jest mniej interesujaca niz lista Magdy...
     inputbox = self.browser.find_element_by_id('id_new_item')
-    inputbox.send_keys('Kupić mleko')
+    inputbox.send_keys('Kupic mleko')
     inputbox.send_keys(Keys.ENTER)
     
-    # Wpisane przez Szymona hasło pojawia się na jego liście.
+    # Wpisane przez Szymona haslo pojawia sie na jego liscie.
     with self.wait_for_page_load(timeout=2):
-        self.check_for_row_in_list_table('1: Kupić mleko')
+        self.check_for_row_in_list_table('1: Kupic mleko')
 
-    # Szymon otrzymuje unikatowy adres URL prowadzący do listy.
+    # Szymon otrzymuje unikatowy adres URL prowadzacy do listy.
     szymon_list_url = self.browser.current_url
     self.assertRegex(szymon_list_url, '/lists/.+')
 
-    # Adresy URL list Magdy i Szymona różnią się od siebie.
+    # Adresy URL list Magdy i Szymona roznia sie od siebie.
     self.assertNotEqual(szymon_list_url, magda_list_url)
 
-    # Ponownie nie ma żadnego śladu po Magdzie.
+    # Ponownie nie ma zadnego sladu po Magdzie.
     page_text = self.browser.find_element_by_tag_name('body').text
-    self.assertNotIn('Kupić pawie pióra', page_text)
-    self.assertIn('Kupić mleko', page_text)
+    self.assertNotIn('Kupic pawie piora', page_text)
+    self.assertIn('Kupic mleko', page_text)
 
-    # Usatysfakcjonowani, oboje kładą się spać.
+    # Usatysfakcjonowani, oboje klada sie spac.
     #self.fail('Koniec testu!')
