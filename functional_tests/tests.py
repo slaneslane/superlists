@@ -6,11 +6,12 @@ from selenium.webdriver.common.keys import Keys
 #from contextlib import contextmanager
 #from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
+from selenium.common.exceptions import WebDriverException
 
 import unittest
 import time
 
-MAX_WAIT = 60
+MAX_WAIT = 10
 
 
 class NewVisitorTest(LiveServerTestCase):
@@ -75,7 +76,7 @@ class NewVisitorTest(LiveServerTestCase):
     inputbox.send_keys(Keys.ENTER)
 
     # Wpisane przez Magde haslo pojawia sie na jej liscie.
-    wait_for_row_in_list_table_and_check_it('1: Kupic pawie piora')
+    self.wait_for_row_in_list_table_and_check_it('1: Kupic pawie piora')
 #    with self.wait_for_page_load(timeout=2):
 #        self.check_for_row_in_list_table('1: Kupic pawie piora')
 
@@ -90,8 +91,8 @@ class NewVisitorTest(LiveServerTestCase):
     inputbox.send_keys(Keys.ENTER)
 
     # Strona zostala ponownie uaktualniona i teraz wyswietla dwa elementy na liscie rzeczy do zrobienia.
-    wait_for_row_in_list_table_and_check_it('1: Kupic pawie piora')
-    wait_for_row_in_list_table_and_check_it('2: Uzyc pawich pior do zrobienia przynety')
+    self.wait_for_row_in_list_table_and_check_it('1: Kupic pawie piora')
+    self.wait_for_row_in_list_table_and_check_it('2: Uzyc pawich pior do zrobienia przynety')
 #    with self.wait_for_page_load(timeout=2):
 #        self.check_for_row_in_list_table('1: Kupic pawie piora')
 #        self.check_for_row_in_list_table('2: Uzyc pawich pior do zrobienia przynety')
@@ -106,7 +107,7 @@ class NewVisitorTest(LiveServerTestCase):
     inputbox.send_keys(Keys.ENTER)
 
     # Wpisane przez Magde haslo pojawia sie na jej liscie.
-    wait_for_row_in_list_table_and_check_it('1: Kupic pawie piora')
+    self.wait_for_row_in_list_table_and_check_it('1: Kupic pawie piora')
 #    with self.wait_for_page_load(timeout=2):
 #        self.check_for_row_in_list_table('1: Kupic pawie piora')
 
@@ -134,7 +135,7 @@ class NewVisitorTest(LiveServerTestCase):
     inputbox.send_keys(Keys.ENTER)
     
     # Wpisane przez Szymona haslo pojawia sie na jego liscie.
-    wait_for_row_in_list_table_and_check_it('1: Kupic mleko')
+    self.wait_for_row_in_list_table_and_check_it('1: Kupic mleko')
 #    with self.wait_for_page_load(timeout=2):
 #        self.check_for_row_in_list_table('1: Kupic mleko')
 
