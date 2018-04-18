@@ -3,11 +3,15 @@ from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 
 #for fixing the selenium 3 problem with reloading waiting page at the end of 5th chapter:
-from contextlib import contextmanager
+#from contextlib import contextmanager
+#from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
 
 import unittest
+import time
+
+MAX_WAIT = 60
+
 
 class NewVisitorTest(LiveServerTestCase):
 
@@ -26,11 +30,22 @@ class NewVisitorTest(LiveServerTestCase):
     rows = table.find_elements_by_tag_name('tr')
     self.assertIn(row_text, [row.text for row in rows])
 
-  @contextmanager
-  def wait_for_page_load(self, pageTitle='', timeout=5):
-    yield WebDriverWait(self, timeout).until(
-        EC.title_is(pageTitle)
-    )
+#  @contextmanager
+#  def wait_for_page_load(self, timeout=5):
+#    yield WebDriverWait(self, timeout).until(
+#        EC.title_is(pageTitle)
+#    )
+
+  def wait_for_row_in_list_table_and_check_it(self, row_text):
+    start_time = time.time()
+    while True:
+        try:
+            self.check_for_row_in_list_table(row_text)
+            return
+        except (AssertionError, WebDriverException) as e:
+            if time.time() - start_time > MAX_WAIT:
+                raise e
+            time.sleep(0.5 )
 
 
   def test_can_start_a_list_for_one_user(self):
@@ -60,8 +75,9 @@ class NewVisitorTest(LiveServerTestCase):
     inputbox.send_keys(Keys.ENTER)
 
     # Wpisane przez Magde haslo pojawia sie na jej liscie.
-    with self.wait_for_page_load('Lista rzeczy do zrobienia',timeout=2):
-        self.check_for_row_in_list_table('1: Kupic pawie piora')
+    wait_for_row_in_list_table_and_check_it('1: Kupic pawie piora')
+#    with self.wait_for_page_load(timeout=2):
+#        self.check_for_row_in_list_table('1: Kupic pawie piora')
 
     # Lista Magdy ma swoj wlasny URL.
     magda_list_url = self.browser.current_url
@@ -74,9 +90,11 @@ class NewVisitorTest(LiveServerTestCase):
     inputbox.send_keys(Keys.ENTER)
 
     # Strona zostala ponownie uaktualniona i teraz wyswietla dwa elementy na liscie rzeczy do zrobienia.
-    with self.wait_for_page_load('Lista rzeczy do zrobienia',timeout=2):
-        self.check_for_row_in_list_table('1: Kupic pawie piora')
-        self.check_for_row_in_list_table('2: Uzyc pawich pior do zrobienia przynety')
+    wait_for_row_in_list_table_and_check_it('1: Kupic pawie piora')
+    wait_for_row_in_list_table_and_check_it('2: Uzyc pawich pior do zrobienia przynety')
+#    with self.wait_for_page_load(timeout=2):
+#        self.check_for_row_in_list_table('1: Kupic pawie piora')
+#        self.check_for_row_in_list_table('2: Uzyc pawich pior do zrobienia przynety')
 
 
   def test_multiple_users_can_start_lists_at_different_urls(self):
@@ -88,8 +106,9 @@ class NewVisitorTest(LiveServerTestCase):
     inputbox.send_keys(Keys.ENTER)
 
     # Wpisane przez Magde haslo pojawia sie na jej liscie.
-    with self.wait_for_page_load('Lista rzeczy do zrobienia',timeout=2):
-        self.check_for_row_in_list_table('1: Kupic pawie piora')
+    wait_for_row_in_list_table_and_check_it('1: Kupic pawie piora')
+#    with self.wait_for_page_load(timeout=2):
+#        self.check_for_row_in_list_table('1: Kupic pawie piora')
 
     # Zauwaza, ze jej lista ma unikalny adres URL.
     magda_list_url = self.browser.current_url
@@ -115,8 +134,9 @@ class NewVisitorTest(LiveServerTestCase):
     inputbox.send_keys(Keys.ENTER)
     
     # Wpisane przez Szymona haslo pojawia sie na jego liscie.
-    with self.wait_for_page_load('Lista rzeczy do zrobienia',timeout=2):
-        self.check_for_row_in_list_table('1: Kupic mleko')
+    wait_for_row_in_list_table_and_check_it('1: Kupic mleko')
+#    with self.wait_for_page_load(timeout=2):
+#        self.check_for_row_in_list_table('1: Kupic mleko')
 
     # Szymon otrzymuje unikatowy adres URL prowadzacy do listy.
     szymon_list_url = self.browser.current_url
