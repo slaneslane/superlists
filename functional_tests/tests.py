@@ -1,14 +1,8 @@
 from django.test import LiveServerTestCase
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
-
-#for fixing the selenium 3 problem with reloading waiting page at the end of 5th chapter:
-#from contextlib import contextmanager
-#from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.support.ui import WebDriverWait
 from selenium.common.exceptions import WebDriverException
 
-import unittest
 import time
 
 MAX_WAIT = 10
@@ -30,12 +24,6 @@ class NewVisitorTest(LiveServerTestCase):
     table = self.browser.find_element_by_id('id_list_table')
     rows = table.find_elements_by_tag_name('tr')
     self.assertIn(row_text, [row.text for row in rows])
-
-#  @contextmanager
-#  def wait_for_page_load(self, timeout=5):
-#    yield WebDriverWait(self, timeout).until(
-#        EC.title_is(pageTitle)
-#    )
 
   def wait_for_row_in_list_table_and_check_it(self, row_text):
     start_time = time.time()
@@ -77,8 +65,6 @@ class NewVisitorTest(LiveServerTestCase):
 
     # Wpisane przez Magde haslo pojawia sie na jej liscie.
     self.wait_for_row_in_list_table_and_check_it('1: Kupic pawie piora')
-#    with self.wait_for_page_load(timeout=2):
-#        self.check_for_row_in_list_table('1: Kupic pawie piora')
 
     # Lista Magdy ma swoj wlasny URL.
     magda_list_url = self.browser.current_url
@@ -93,9 +79,6 @@ class NewVisitorTest(LiveServerTestCase):
     # Strona zostala ponownie uaktualniona i teraz wyswietla dwa elementy na liscie rzeczy do zrobienia.
     self.wait_for_row_in_list_table_and_check_it('1: Kupic pawie piora')
     self.wait_for_row_in_list_table_and_check_it('2: Uzyc pawich pior do zrobienia przynety')
-#    with self.wait_for_page_load(timeout=2):
-#        self.check_for_row_in_list_table('1: Kupic pawie piora')
-#        self.check_for_row_in_list_table('2: Uzyc pawich pior do zrobienia przynety')
 
 
   def test_multiple_users_can_start_lists_at_different_urls(self):
@@ -108,8 +91,6 @@ class NewVisitorTest(LiveServerTestCase):
 
     # Wpisane przez Magde haslo pojawia sie na jej liscie.
     self.wait_for_row_in_list_table_and_check_it('1: Kupic pawie piora')
-#    with self.wait_for_page_load(timeout=2):
-#        self.check_for_row_in_list_table('1: Kupic pawie piora')
 
     # Zauwaza, ze jej lista ma unikalny adres URL.
     magda_list_url = self.browser.current_url
@@ -133,11 +114,9 @@ class NewVisitorTest(LiveServerTestCase):
     inputbox = self.browser.find_element_by_id('id_new_item')
     inputbox.send_keys('Kupic mleko')
     inputbox.send_keys(Keys.ENTER)
-    
+
     # Wpisane przez Szymona haslo pojawia sie na jego liscie.
     self.wait_for_row_in_list_table_and_check_it('1: Kupic mleko')
-#    with self.wait_for_page_load(timeout=2):
-#        self.check_for_row_in_list_table('1: Kupic mleko')
 
     # Szymon otrzymuje unikatowy adres URL prowadzacy do listy.
     szymon_list_url = self.browser.current_url
@@ -151,5 +130,31 @@ class NewVisitorTest(LiveServerTestCase):
     self.assertNotIn('Kupic pawie piora', page_text)
     self.assertIn('Kupic mleko', page_text)
 
-    # Usatysfakcjonowani, oboje klada sie spac.
-    #self.fail('Koniec testu!')
+
+  def test_layout_and_styling(self):
+
+    # Magda odwiedza strone glowna aplikacji.
+    self.browser.get(self.live_server_url)
+    self.browser.set_window_size(1024, 768)
+
+    # Zauwaza, ze inputbox znajduje sie na srodku strony.
+    inputbox = self.browser.find_element_by_id('id_new_item')
+    self.assertAlmostEqual(
+        inputbox.location['x'] + inputbox.size['width'] / 2, 512, delta=10
+    )
+
+    # Magda tworzy nowa liste i zauwaza, ze inputbox jest wciaz na srodku strony.
+    inputbox.send_keys('testowy')
+    inputbox.send_keys(Keys.ENTER)
+    self.wait_for_row_in_list_table_and_check_it('1: testowy')
+
+    inputbox = self.browser.find_element_by_id('id_new_item')
+    self.assertAlmostEqual(
+        inputbox.location['x'] + inputbox.size['width'] / 2, 512, delta=10
+    )
+
+
+
+
+# Usatysfakcjonowani, oboje klada sie spac.
+#self.fail('Koniec testu!')
