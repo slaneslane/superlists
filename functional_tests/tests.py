@@ -38,9 +38,9 @@ class NewVisitorTest(StaticLiveServerTestCase):
 
   def element_centered(self, element_tag, delta_=10):
     element = self.browser.find_element_by_id(element_tag)
-    browser_size = self.browser.get_window_size() 
+    browser_size = self.browser.get_window_size()
     self.assertAlmostEqual(
-        element.location['x'] + (element.size['width'] / 2), (browser_size['width'] / 2), 2, delta=delta_
+        element.location['x'] + (element.size['width'] / 2), (browser_size['width'] / 2), delta=delta_
     )
 
   def test_can_start_a_list_for_one_user(self):
@@ -143,7 +143,7 @@ class NewVisitorTest(StaticLiveServerTestCase):
     self.browser.get(self.live_server_url)
 
     # Zauwaza, ze inputbox znajduje sie na srodku strony.
-    self.element_centered('id_new_item')
+    self.element_centered('id_new_item', 45)
 
     # Magda tworzy nowa liste
     inputbox = self.browser.find_element_by_id('id_new_item')
@@ -152,7 +152,7 @@ class NewVisitorTest(StaticLiveServerTestCase):
     self.wait_for_row_in_list_table_and_check_it('1: testowy')
 
     # Zauwaza, ze inputbox jest wciaz na srodku strony.
-    self.element_centered('id_new_item')
+    self.element_centered('id_new_item', 45)
 
 
 
