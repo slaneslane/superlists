@@ -26,7 +26,8 @@ SECRET_KEY = 'qpurfz=xwdwv9rtdmht()irihr2rr0pcq63s_pxpaulq%u4yc!'
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    'slane.pythonanywhere.com'
+    #'slane.pythonanywhere.com'
+    '*'
 ]
 
 
