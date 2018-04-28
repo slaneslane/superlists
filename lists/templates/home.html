@@ -1,3 +1,3 @@
 {% extends 'base.html' %}
 {% block header-text %}Utwórz nową listę rzeczy do zrobienia{% endblock %}
-{% block form-action %}/lists/new{% endblock %}
+{% block form-action %}{% url 'new_list' %}{% endblock %}
