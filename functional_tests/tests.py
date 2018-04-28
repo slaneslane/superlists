@@ -1,3 +1,4 @@
+import os
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
@@ -10,10 +11,15 @@ MAX_WAIT = 10
 
 class NewVisitorTest(StaticLiveServerTestCase):
 
+
   def setUp(self):
     # Rozpoczynamy nowa sesje przegladarki.
     self.browser = webdriver.Firefox()
     self.browser.implicitly_wait(3)
+
+    staging_server = os.environ.get('STAGING_SERVER')
+    if staging_server:
+        self.live_server_url = 'http://' + staging_server
 
   def tearDown(self):
     # Na koniec wylaczamy sesje przegladarki aby miec pewnosc, ze zadne

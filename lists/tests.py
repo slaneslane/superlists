@@ -1,12 +1,8 @@
-from django.core.urlresolvers import resolve
 from django.test import TestCase
-from django.http import HttpRequest
- 
-from lists.views import home_page
 from lists.models import Item, List
 
 class HomePageTest(TestCase):
- 
+
     def test_uses_home_template(self):
         response = self.client.get('/')
         self.assertTemplateUsed(response, 'home.html')
@@ -72,7 +68,7 @@ class NewItemTest(TestCase):
             '/lists/%d/add_item' % (correct_list.id),
             data={'item_text': 'Nowy element dla istniejącej listy'}
         )
- 
+
         self.assertEqual(Item.objects.count(), 1)
         new_item = Item.objects.first()
         self.assertEqual(new_item.text, 'Nowy element dla istniejącej listy')
