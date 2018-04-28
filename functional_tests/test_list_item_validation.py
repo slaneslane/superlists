@@ -14,7 +14,7 @@ class ItemValidationTest(FunctionalTest):
     # informujacy o niemozliwosci utworzenia pustego elementu na liscie.
     self.wait_for(lambda: self.assertEqual(
         self.browser.find_element_by_css_selector('.has-error').text,
-        "Element nie moze byc pusty!"
+        "Element nie może być pusty!"
     ))
 
     # Sprobowala ponownie wpisujac dowolny tekst i tym razem wszystko zadzialalo.
@@ -28,7 +28,7 @@ class ItemValidationTest(FunctionalTest):
     # Na stronie listy otrzymala ostrzezenie podobne do wczesniejszego.
     self.wait_for(lambda: self.assertEqual(
         self.browser.find_element_by_css_selector('.has-error').text,
-        "Element nie moze byc pusty!"
+        "Element nie może być pusty!"
     ))
 
     # Element mogla poprawic wpisujac w nim dowolny tekst.
