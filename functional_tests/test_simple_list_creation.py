@@ -17,7 +17,7 @@ class NewVisitorTest(FunctionalTest):
     self.assertIn('Utwórz nową listę rzeczy do zrobienia', header_text)
 
     # Od razu zostaje zachecona, aby wpisac rzecz do zrobienia.
-    inputbox = self.browser.find_element_by_id('id_new_item')
+    inputbox = self.get_item_input_box()
     self.assertEqual(
         inputbox.get_attribute('placeholder'),
         'Wpisz rzecz do zrobienia'
@@ -40,7 +40,7 @@ class NewVisitorTest(FunctionalTest):
 
     # Na stronie nadal znajduje sie pole tekstowe zachecajace do podania kolejnego zadania.
     # Magda wpisala "Uzyc pawich pior do zrobienia przynety" (Magda jest niezwykle skrupulatna).
-    inputbox = self.browser.find_element_by_id('id_new_item')
+    inputbox = self.get_item_input_box()
     inputbox.send_keys('Uzyc pawich pior do zrobienia przynety')
     inputbox.send_keys(Keys.ENTER)
 
@@ -53,7 +53,7 @@ class NewVisitorTest(FunctionalTest):
 
     # Magda odpala strone aplikacji i wpisuje haslo generujac nowa liste.
     self.browser.get(self.live_server_url)
-    inputbox = self.browser.find_element_by_id('id_new_item')
+    inputbox = self.get_item_input_box()
     inputbox.send_keys('Kupic pawie piora')
     inputbox.send_keys(Keys.ENTER)
 
@@ -79,7 +79,7 @@ class NewVisitorTest(FunctionalTest):
 
     # Szymon tworzy wlasna liste, wprowadzajac nowy element.
     # Jego lista jest mniej interesujaca niz lista Magdy...
-    inputbox = self.browser.find_element_by_id('id_new_item')
+    inputbox = self.get_item_input_box()
     inputbox.send_keys('Kupic mleko')
     inputbox.send_keys(Keys.ENTER)
 

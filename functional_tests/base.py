@@ -55,3 +55,6 @@ class FunctionalTest(StaticLiveServerTestCase):
     self.assertAlmostEqual(
         element.location['x'] + (element.size['width'] / 2), (browser_size['width'] / 2), delta=delta_
     )
+
+  def get_item_input_box(self):
+    return self.browser.find_element_by_id('id_text')
