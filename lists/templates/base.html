@@ -13,10 +13,7 @@
             <div class="text-center">
                 <h1>{% block header-text %}{% endblock %}</h1>
                 <form method="POST" action="{% block form-action %}{% endblock %}">
-                    <input name="item_text" id="id_new_item"
-                        class="form-control input-lg"
-                        placeholder="Wpisz rzecz do zrobienia"
-                    />
+                    {{ form.text }}
                     {% csrf_token %}
                     {% if error %}
                         <div class="form-group has-error">
