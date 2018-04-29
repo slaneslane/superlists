@@ -7,20 +7,20 @@ class NewVisitorTest(FunctionalTest):
 
   def test_can_start_a_list_for_one_user(self):
 
-    # Magda dowiedziala sie o nowej, wspanialej aplikacji w postaci listy rzeczy do zrobienia.
+    # Magda dowiedziala sie o nowej, wspanialej aplikacji w postaci listy rzecz do zrobienia.
     # Przechodzi wiec na strone glowna tej aplikacji.
     self.browser.get(self.live_server_url)
 
     # Magda zwrocila uwage, ze tytul strony i naglowek zawieraja slowo 'Listy' i 'rzeczy do zrobienia'.
     self.assertIn('Listy', self.browser.title)
     header_text = self.browser.find_element_by_tag_name('h1').text
-    self.assertIn('rzeczy do zrobienia', header_text)
+    self.assertIn('Utwórz nową listę rzeczy do zrobienia', header_text)
 
     # Od razu zostaje zachecona, aby wpisac rzecz do zrobienia.
     inputbox = self.browser.find_element_by_id('id_new_item')
     self.assertEqual(
         inputbox.get_attribute('placeholder'),
-        'Wpisz rzeczy do zrobienia'
+        'Wpisz rzecz do zrobienia'
     )
 
     # W polu tekstowym wpisala "Kupic pawie piora"
@@ -28,7 +28,7 @@ class NewVisitorTest(FunctionalTest):
     inputbox.send_keys('Kupic pawie piora')
 
     # Po wcisnieciu klawisza Enter strona zostala uaktualniona i wyswietla
-    # "1: Kupic pawie piora" jako element listy rzeczy do zrobienia.
+    # "1: Kupic pawie piora" jako element listy rzecz do zrobienia.
     inputbox.send_keys(Keys.ENTER)
 
     # Wpisane przez Magde haslo pojawia sie na jej liscie.
@@ -44,7 +44,7 @@ class NewVisitorTest(FunctionalTest):
     inputbox.send_keys('Uzyc pawich pior do zrobienia przynety')
     inputbox.send_keys(Keys.ENTER)
 
-    # Strona zostala ponownie uaktualniona i teraz wyswietla dwa elementy na liscie rzeczy do zrobienia.
+    # Strona zostala ponownie uaktualniona i teraz wyswietla dwa elementy na liscie rzecz do zrobienia.
     self.wait_for_row_in_list_table_and_check_it('1: Kupic pawie piora')
     self.wait_for_row_in_list_table_and_check_it('2: Uzyc pawich pior do zrobienia przynety')
 
