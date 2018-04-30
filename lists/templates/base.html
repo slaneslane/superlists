@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="pl">
 <head>
-	<title>Listy rzeczy do zrobienia</title>
+    <title>Listy rzeczy do zrobienia</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="/static/bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
     <link href="/static/base.css" rel="stylesheet" media="screen">
@@ -32,5 +32,12 @@
         </div>
     </div>
 </div>
+<script src="https://code.jquery.com/jquery-3.1.1.slim.min.js"></script> 
+<script src="/static/list.js"></script>
+<script>
+$(document).ready(function () {
+  window.Superlists.initialize();
+});
+</script>
 </body>
 </html>

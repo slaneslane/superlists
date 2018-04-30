@@ -62,10 +62,10 @@ class ItemValidationTest(FunctionalTest):
     # Powtórnie wpisała to samo hasło:
     self.get_item_input_box().send_keys('Glupie zarty')
     self.get_item_input_box().send_keys(Keys.ENTER)
-    self.wait_for(lambda: self.assertTrue(self.get_error_element.is_displayed()))
+    self.wait_for(lambda: self.assertTrue(self.get_error_element().is_displayed()))
 
     # Rozpoczela wpisywanie danych w elemencie <input> aby usunac blad:
     self.get_item_input_box().send_keys('a')
 
     # Byla zadowolona widzac, ze komunikat bledu zniknal:
-    self.wait_for(lambda: self.assertFalse(self.get_error_element.is_displayed()))
+    self.wait_for(lambda: self.assertFalse(self.get_error_element().is_displayed()))
