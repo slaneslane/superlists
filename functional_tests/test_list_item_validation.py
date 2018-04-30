@@ -49,5 +49,5 @@ class ItemValidationTest(FunctionalTest):
     # Otrzymala czytelny komunikat bledu:
     self.wait_for(lambda: self.assertEqual(
       self.browser.find_element_by_css_selector('.has-error').text,
-        "Ten element znajduje się już na liście"
+        DUPLICATE_ITEM_ERROR
     ))
