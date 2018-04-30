@@ -1,6 +1,6 @@
 from .base import FunctionalTest
 from selenium.webdriver.common.keys import Keys
-
+from lists.forms import DUPLICATE_ITEM_ERROR
 
 class ItemValidationTest(FunctionalTest):
 
