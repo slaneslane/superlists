@@ -34,3 +34,20 @@ class ItemValidationTest(FunctionalTest):
     self.get_item_input_box().send_keys(Keys.ENTER)
     self.wait_for_row_in_list_table_and_check_it('1: Kupic mleko')
     self.wait_for_row_in_list_table_and_check_it('2: Zrobic herbate')
+
+  def test_cannot_add_duplicate_items(self):
+    # Magda przeszla na strone glowna i zaczela tworzyc nowa liste
+    self.browser.get(self.live_server_url)
+    self.get_item_input_box().send_keys('Kupic kalosze')
+    self.get_item_input_box().send_keys(Keys.ENTER)
+    self.wait_for_row_in_list_table_and_check_it('1: Kupic kalosze')
+
+    # Przypadkowo sprobowala wpisac element, ktory juz znajdowal sie na liscie
+    self.get_item_input_box().send_keys('Kupic kalosze')
+    self.get_item_input_box().send_keys(Keys.ENTER)
+      
+    # Otrzymala czytelny komunikat bledu:
+    self.wait_for(lambda: self.assertEqual(
+      self.browser.find_element_by_css_selector('.has-error').text,
+        "Ten element znajduje się już na liście"
+    ))
