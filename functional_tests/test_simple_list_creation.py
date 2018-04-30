@@ -98,4 +98,4 @@ class NewVisitorTest(FunctionalTest):
     self.assertNotIn('Kupic pawie piora', page_text)
     self.assertIn('Kupic mleko', page_text)
 
-   
+    # Usatysfakcjonowani oboje kładą się spać.
