@@ -26,4 +26,6 @@ class ViewAndAddToList(DetailView, CreateView):
 
     def get_form(self):
         self.object = self.get_object()
-        return self.form_class(for_list=self.object, data=self.request.POST)
+        if self.request.method == "POST":
+            return self.form_class(for_list=self.object, data=self.request.POST)
+        return self.form_class(for_list=self.object)
