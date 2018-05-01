@@ -55,19 +55,18 @@ class ItemValidationTest(FunctionalTest):
   def test_error_messages_are_cleared_on_input(self):
     # Magda utworzyla nowa liste w sposob, ktory spowodowal powstanie bledu weryfikacji:
     self.browser.get(self.live_server_url)
-    self.get_item_input_box().send_keys('Glupie zart')
+    self.get_item_input_box().send_keys('To jest istna loteria')
     self.get_item_input_box().send_keys(Keys.ENTER)
-    self.wait_for_row_in_list_table_and_check_it('1: Glupie zart')
+    self.wait_for_row_in_list_table_and_check_it('1: To jest istna loteria')
 
     # Powtórnie wpisała to samo hasło:
-    self.get_item_input_box().send_keys('Glupie zart')
+    self.get_item_input_box().send_keys('To jest istna loteria')
     self.get_item_input_box().send_keys(Keys.ENTER)
     self.wait_for(lambda: self.assertTrue(self.get_error_element().is_displayed()))
 
-    # Rozpoczela wpisywanie danych w elemencie <input> aby usunac blad:
-    self.get_item_input_box().send_keys('y')
-    print(self.get_item_input_box().get_attribute('value'))
-    self.browser.implicitly_wait(5)
+    # Kliknęła myszką na element <input> aby usunac blad:
+    self.get_item_input_box().send_keys('')
+    self.assertEqual(self.get_item_input_box(), self.browser.switch_to_active_element())
 
     # Byla zadowolona widzac, ze komunikat bledu zniknal:
     self.wait_for(lambda: self.assertFalse(self.get_error_element().is_displayed()))
