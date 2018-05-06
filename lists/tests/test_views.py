@@ -18,7 +18,7 @@ class HomePageTest(TestCase):
         response = self.client.get('/')
         self.assertIsInstance(response.context['form'], ItemForm)
 
-    def test_does_not_show_error_on_page_after_redirect(self):
+    def test_does_not_show_error_on_homepage_after_redirect(self):
         list_ = List.objects.create()
         response = self.client.get('/')
         self.assertNotContains(response, escape(EMPTY_LIST_ERROR))
@@ -28,7 +28,7 @@ class NewListTest(TestCase):
 
 #***************** POST METHOD TESTS ************************
 
-    def test_can_save_a_POST_request(self):
+    def test_newlist_can_save_a_POST_request(self):
         self.client.post('/lists/new', data={'text': 'Nowy element listy'})
         self.assertEqual(Item.objects.count(), 1)
         new_item = Item.objects.first()
@@ -49,7 +49,7 @@ class NewListTest(TestCase):
         #print(response.content.decode())
         self.assertContains(response, escape(EMPTY_LIST_ERROR))
 
-    def test_for_invalid_input_passes_form_to_template(self):
+    def test_for_invalid_input_passes_itemform_to_home_template(self):
         response = self.client.post('/lists/new', data={'text': ''})
         self.assertIsInstance(response.context['form'], ItemForm)
 
@@ -96,7 +96,7 @@ class ListViewTest(TestCase):
 
 #****************** GET METHOD TESTS ************************
 
-    def test_does_not_show_error_on_page_after_redirect(self):
+    def test_does_not_show_error_on_listpage_after_redirect(self):
         list_ = List.objects.create()
         response = self.client.get(f'/lists/{list_.id}/')
         self.assertNotContains(response, escape(EMPTY_LIST_ERROR))
@@ -109,7 +109,7 @@ class ListViewTest(TestCase):
 
 #***************** POST METHOD TESTS ************************
 
-    def test_can_save_a_POST_request_to_an_existing_list(self):
+    def test_listpage_can_save_a_POST_request_to_an_existing_list(self):
         other_list = List.objects.create()
         correct_list = List.objects.create()
 
@@ -151,7 +151,7 @@ class ListViewTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'list.html')
 
-    def test_for_invalid_input_passes_form_to_template(self):
+    def test_for_invalid_input_passes_existinglistitemform_to_list_template(self):
         response = self.post_invalid_input()
         self.assertIsInstance(response.context['form'], ExistingListItemForm)
 
