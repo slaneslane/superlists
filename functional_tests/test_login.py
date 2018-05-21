@@ -47,3 +47,13 @@ class LoginTest(FunctionalTest):
         )
         navbar = self.browser.find_element_by_css_selector('.navbar')
         self.assertIn(TEST_MAIL, navbar.text)
+
+        # Teraz się wylogowuje:
+        self.browser.find_element_by_link_text('Wyloguj').click()
+
+        # Magda jest wylogowana.
+        self.wait_for(
+            lambda: self.browser.find_element_by_name('email')
+        )
+        navbar = self.browser.find_element_by_css_selector('.navbar')
+        self.assertNotIn(TEST_MAIL, navbar.text)
