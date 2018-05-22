@@ -3,6 +3,7 @@ from selenium import webdriver
 from selenium.common.exceptions import WebDriverException
 import os
 import time
+from .server_tools import reset_database
 
 MAX_WAIT = 10
 
@@ -24,16 +25,13 @@ def wait(func):
 class FunctionalTest(StaticLiveServerTestCase):
 
     def setUp(self):
-        # Rozpoczynamy nowa sesje przegladarki.
         self.browser = webdriver.Firefox()
-        self.browser.implicitly_wait(3)
-        staging_server = os.environ.get('STAGING_SERVER')
-        if staging_server:
-            self.live_server_url = 'http://' + staging_server
+        self.staging_server = os.environ.get('STAGING_SERVER')
+        if self.staging_server:
+            self.live_server_url = 'http://' + self.staging_server
+            reset_database(self.staging_server)
 
     def tearDown(self):
-        # Na koniec wylaczamy sesje przegladarki aby miec pewnosc, ze zadne
-        # informacje dotyczace poprzedniego uzytkownika nie zostana ujawnione, na przyklad przez cookies.
         self.browser.quit()
     
     @wait
