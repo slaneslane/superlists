@@ -42,18 +42,10 @@ class LoginTest(FunctionalTest):
         self.browser.get(url)
 
         # Magda jest teraz zalogowana w serwisie Twoje Listy!
-        self.wait_for(
-                lambda: self.browser.find_element_by_link_text('Wyloguj')
-        )
-        navbar = self.browser.find_element_by_css_selector('.navbar')
-        self.assertIn(TEST_MAIL, navbar.text)
+        self.wait_to_be_logged_in(email=TEST_MAIL) 
 
         # Teraz się wylogowuje:
         self.browser.find_element_by_link_text('Wyloguj').click()
 
         # Magda jest wylogowana.
-        self.wait_for(
-            lambda: self.browser.find_element_by_name('email')
-        )
-        navbar = self.browser.find_element_by_css_selector('.navbar')
-        self.assertNotIn(TEST_MAIL, navbar.text)
+        self.wait_to_be_logged_out(email=TEST_MAIL)

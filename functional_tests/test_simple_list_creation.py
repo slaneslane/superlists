@@ -32,7 +32,7 @@ class NewVisitorTest(FunctionalTest):
     inputbox.send_keys(Keys.ENTER)
 
     # Wpisane przez Magde haslo pojawia sie na jej liscie.
-    self.wait_for_row_in_list_table_and_check_it('1: Kupic pawie piora')
+    self.wait_for_row_in_list_table('1: Kupic pawie piora')
 
     # Lista Magdy ma swoj wlasny URL.
     magda_list_url = self.browser.current_url
@@ -45,8 +45,8 @@ class NewVisitorTest(FunctionalTest):
     inputbox.send_keys(Keys.ENTER)
 
     # Strona zostala ponownie uaktualniona i teraz wyswietla dwa elementy na liscie rzecz do zrobienia.
-    self.wait_for_row_in_list_table_and_check_it('1: Kupic pawie piora')
-    self.wait_for_row_in_list_table_and_check_it('2: Uzyc pawich pior do zrobienia przynety')
+    self.wait_for_row_in_list_table('1: Kupic pawie piora')
+    self.wait_for_row_in_list_table('2: Uzyc pawich pior do zrobienia przynety')
 
 
   def test_multiple_users_can_start_lists_at_different_urls(self):
@@ -58,7 +58,7 @@ class NewVisitorTest(FunctionalTest):
     inputbox.send_keys(Keys.ENTER)
 
     # Wpisane przez Magde haslo pojawia sie na jej liscie.
-    self.wait_for_row_in_list_table_and_check_it('1: Kupic pawie piora')
+    self.wait_for_row_in_list_table('1: Kupic pawie piora')
 
     # Zauwaza, ze jej lista ma unikalny adres URL.
     magda_list_url = self.browser.current_url
@@ -84,7 +84,7 @@ class NewVisitorTest(FunctionalTest):
     inputbox.send_keys(Keys.ENTER)
 
     # Wpisane przez Szymona haslo pojawia sie na jego liscie.
-    self.wait_for_row_in_list_table_and_check_it('1: Kupic mleko')
+    self.wait_for_row_in_list_table('1: Kupic mleko')
 
     # Szymon otrzymuje unikatowy adres URL prowadzacy do listy.
     szymon_list_url = self.browser.current_url

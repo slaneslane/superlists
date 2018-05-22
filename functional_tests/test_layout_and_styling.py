@@ -15,7 +15,7 @@ class LayoutAndStylingTest(FunctionalTest):
     # Magda tworzy nowa liste
     self.get_item_input_box().send_keys('testowy')
     self.get_item_input_box().send_keys(Keys.ENTER)
-    self.wait_for_row_in_list_table_and_check_it('1: testowy')
+    self.wait_for_row_in_list_table('1: testowy')
 
     # Zauwaza, ze inputbox jest wciaz na srodku strony.
     self.element_centered('id_text', 45)
