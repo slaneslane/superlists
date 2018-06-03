@@ -44,7 +44,7 @@ class SendLoginEmailViewTest(TestCase):
 
         self.assertEqual(mock_send_mail.called, True)
         (subject, body, from_email, to_list), kwargs = mock_send_mail.call_args
-        self.assertEqual(subject, 'Twój link to zalogowania się w serwisie Twoje Listy')
+        self.assertEqual(subject, 'Twój link do zalogowania się w serwisie Twoje Listy')
         self.assertEqual(from_email, 'noreply@twojelisty')
         self.assertEqual(to_list, ['magda@naprzyklad.pl'])
 

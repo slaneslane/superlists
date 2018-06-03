@@ -10,26 +10,46 @@
   <div id="qunit"></div>
   <div id="qunit-fixture">
     <form>  
-    <input name="text" />
+      <input id="id_text"/>
       <div class="has-error">Error text</div>
     </form>
+
+    <table id="id_list_table">
+      <tr><td>Row first</td></tr>
+      <tr><td>Row second</td></tr>
+    </table>
   </div>
-
-  <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js"></script>
-  <script src="../list.js"></script>
-  <script src="https://code.jquery.com/qunit/qunit-2.6.0.js"></script>
-
-  <script>
-QUnit.test("errors should be hidden on focus", function (assert) {
+<script src="https://code.jquery.com/jquery-3.1.1.slim.min.js"></script>
+<script src="../list.js"></script>
+<script src="https://code.jquery.com/qunit/qunit-2.6.0.js"></script>
+<script>
+QUnit.module('Error tests');
+QUnit.test("Errors should be hidden on focus.", function(assert){
   window.Superlists.initialize();
-  $('input[name="text"]').trigger('focus');
+  $('#id_text').trigger('focus');
   assert.equal($('.has-error').is(':visible'), false);
 });
 
-QUnit.test("errors aren't hidden if there is no focus", function (assert) {
+QUnit.test("Errors aren't hidden if there is no focus.", function(assert){
   window.Superlists.initialize();
   assert.equal($('.has-error').is(':visible'), true);
 });
-  </script>
+
+QUnit.module('Filtering tests');
+QUnit.test("All rows should be visible in table before filtering.", function(assert){
+  window.Superlists.filter_list();
+  $('#id_text').trigger('keyup');
+  assert.ok($('#id_list_table tr').eq(0).is(':visible'))
+  assert.ok($('#id_list_table tr').eq(1).is(':visible'))
+});
+
+QUnit.test("Only one row should be visible in table after filtering.", function(assert){
+  window.Superlists.filter_list();
+  $('#id_text').val('first');
+  $('#id_text').trigger('keyup');
+  assert.ok($('#id_list_table tr').eq(0).is(':visible'))
+  assert.ok($('#id_list_table tr').eq(1).is(':hidden'))
+});
+</script>
 </body>
 </html>

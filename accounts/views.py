@@ -13,7 +13,7 @@ def send_login_email(request):
     )
     message_body = f'Kliknij w poniższy link aby się zalogować w serwisie Twoje Listy:\n\n{url}'
     send_mail(
-        'Twój link to zalogowania się w serwisie Twoje Listy',
+        'Twój link do zalogowania się w serwisie Twoje Listy',
         message_body,
         'noreply@twojelisty',
         [email]
