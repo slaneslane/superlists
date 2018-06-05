@@ -12,20 +12,25 @@ def send_login_email(request):
         reverse('login') + '?token=' + str(token.uid)
     )
     message_body = f'Kliknij w poniższy link aby się zalogować w serwisie Twoje Listy:\n\n{url}'
-    send_mail(
+
+    send_status = send_mail(
         'Twój link do zalogowania się w serwisie Twoje Listy',
         message_body,
         'noreply@twojelisty',
         [email]
     )
-    messages.success(
-        request,
-        'Sprawdź swoją skrzynkę pocztową. Wysłaliśmy Ci wiadomość z linkiem, który pozwoli Ci się zalogować.'
-    )
-    messages.warning(
-        request,
-        'Niestety coś poszło nie tak. Wprowadź swój poprawny adres e-mail.'
-    )
+
+    if send_status:
+        messages.success(
+            request,
+            'Sprawdź swoją skrzynkę pocztową. Wysłaliśmy Ci wiadomość z linkiem, który pozwoli Ci się zalogować.'
+        )
+    else:
+        messages.warning(
+                request,
+            'Niestety coś poszło nie tak. Wprowadź swój poprawny adres e-mail.'
+        )
+
 #    # inaczej (niestety nie współgra z mockiem):
 #    messages.add_message(
 #        request,
