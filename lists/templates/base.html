@@ -20,8 +20,12 @@
         </div>
         {% if user.email %}
           <ul class="nav navbar-nav navbar-right">
-              <li class="navbar-text">Zalogowano jako: {{ user.email }}</li>
-              <li><a href="{% url 'logout' %}">Wyloguj</a><li>
+              <li class="navbar-text"><span class="glyphicon glyphicon-user"></span> {{ user.email }}</li>
+              <li>
+                <a href="{% url 'logout' %}" data-toggle="tooltip" data-placement="bottom" title="Wróć do strony głównej">
+                  <span class="glyphicon glyphicon-log-out"></span>
+                </a>
+              <li>
           </ul>
         {% else %}
           <form class="navbar-form navbar-right" method="POST" action="{% url 'send_login_email' %}">

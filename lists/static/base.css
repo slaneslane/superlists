@@ -1,10 +1,15 @@
 .navbar {
     background-color: #f4511e;
+}
+.navbar-header .navbar-brand, .nav .navbar-text, .navbar-default .navbar-nav > li > a {
+    color: #ddd;
+    font-family: Montserrat, sans-serif;
+}
+.navbar-header .navbar-brand:hover, .navbar-default .navbar-nav > li > a:hover {
     color: #fff;
 }
-.navbar-header .navbar-brand {
-    color: #fff;
-    font-family: Montserrat, sans-serif;
+.input-group-btn button:hover{
+    background-color: #fff;
 }
 body {
     font: 400 15px Lato, sans-serif;
