@@ -1,7 +1,11 @@
+body {
+    font: 400 15px Lato, sans-serif;
+    color: #818181;
+}
 .navbar {
     background-color: #f4511e;
 }
-.navbar-header .navbar-brand, .nav .navbar-text, .navbar-default .navbar-nav > li > a {
+.navbar-header .navbar-brand, .navbar-form, .nav .navbar-text, .navbar-default .navbar-nav > li > a {
     color: #ddd;
     font-family: Montserrat, sans-serif;
 }
@@ -10,11 +14,6 @@
 }
 .input-group-btn button:hover{
     background-color: #fff;
-}
-body {
-    font: 400 15px Lato, sans-serif;
-    line-height: 1.8;
-    color: #818181;
 }
 .jumbotron {
     background-color: #f4511e;
