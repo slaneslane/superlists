@@ -16,71 +16,67 @@
 <nav class="navbar navbar-default" role="navigation">
     <div class="container-fluid">
         <div class="navbar-header">
-          <a class="navbar-brand" href="/" data-toggle="tooltip" data-placement="bottom" title="Wróć do strony głównej">Twoje Listy</a>
+            <a class="navbar-brand" href="/" data-toggle="tooltip" data-placement="bottom" title="Wróć do strony głównej">Twoje Listy</a>
         </div>
         {% if user.email %}
-          <ul class="nav navbar-nav navbar-right">
-              <li class="navbar-text"><span class="glyphicon glyphicon-user"></span> {{ user.email }}</li>
-              <li>
+        <ul class="nav navbar-nav navbar-right">
+            <li class="navbar-text"><span class="glyphicon glyphicon-user"></span> {{ user.email }}</li>
+            <li>
                 <a href="{% url 'logout' %}" data-toggle="tooltip" data-placement="bottom" title="Wyloguj">
-                  <span class="glyphicon glyphicon-log-out"></span>
+                    <span class="glyphicon glyphicon-log-out"></span>
                 </a>
-              <li>
-          </ul>
+            <li>
+        </ul>
         {% else %}
-          <form class="navbar-form navbar-right" method="POST" action="{% url 'send_login_email' %}">
-              <span>Podaj adres email do zalogowania:</span>
-              <div class="input-group">
+        <form class="navbar-form navbar-right" method="POST" action="{% url 'send_login_email' %}">
+            <span>Podaj adres email do zalogowania:</span>
+            <div class="input-group">
                 <input class="form-control" name="email" type="text" data-toggle="tooltip" data-placement="bottom" title="Podaj adres email"/>
                 <div class="input-group-btn">
-                  <button class="btn btn-default" type="submit" data-toggle="tooltip" data-placement="bottom" title="Zaloguj">
-                    <i class="glyphicon glyphicon-log-in"></i>
-                  </button>
+                    <button class="btn btn-default" type="submit" data-toggle="tooltip" data-placement="bottom" title="Zaloguj">
+                        <i class="glyphicon glyphicon-log-in"></i>
+                    </button>
                 </div>
-              </div>
-              {% csrf_token %}
-          </form>
+            </div>
+            {% csrf_token %}
+        </form>
         {% endif %}
     </div>
 </nav>
+<div class="jumbotron">
+    <div class="text-center col-md-8 col-md-offset-2" >
+        <h1>{% block header-text %}{% endblock %}</h1>
+        <form method="POST" action="{% block form-action %}{% endblock %}">
+            {{ form.text }}
+            {% csrf_token %}
+            {% if form.errors %}
+            <div class="form-group has-error">
+                <span class="help-block">{{ form.text.errors }}</span>
+            </div>
+            {% endif %}
+        </form>
+    </div>
+</div>
 <div class="container">
     {% if messages %}
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
-            {% for message in messages %}
-              {% if message.level_tag == 'success' %}
-                <div class="alert alert-success alert-dismissible fade in">
-                  <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                  {{ message }}
-                </div>
-              {% else %}
-                <div class="alert alert-warning alert-dismissible fade in">
-                  <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                  {{ message }}
-                </div>
-              {% endif %}
-            {% endfor %}
+          {% for message in messages %}
+            {% if message.level_tag == 'success' %}
+            <div class="alert alert-success alert-dismissible fade in">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                {{ message }}
+            </div>
+            {% else %}
+            <div class="alert alert-warning alert-dismissible fade in">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                {{ message }}
+            </div>
+            {% endif %}
+          {% endfor %}
         </div>
     </div>
     {% endif %}
-
-    <div class="row">
-        <div class="col-md-8 col-md-offset-2 jumbotron">
-            <div class="text-center">
-                <h1>{% block header-text %}{% endblock %}</h1>
-                <form method="POST" action="{% block form-action %}{% endblock %}">
-                    {{ form.text }}
-                    {% csrf_token %}
-                    {% if form.errors %}
-                        <div class="form-group has-error">
-                            <span class="help-block">{{ form.text.errors }}</span>
-                        </div>
-                    {% endif %}
-                </form>
-            </div>
-        </div>
-    </div>
-
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
             {% block table %}

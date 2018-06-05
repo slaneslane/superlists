@@ -4,6 +4,9 @@ body {
 }
 .navbar {
     background-color: #f4511e;
+    margin-bottom: 0;
+    border-radius: 0;
+    border: 0;
 }
 .navbar-header .navbar-brand, .navbar-form, .nav .navbar-text, .navbar-default .navbar-nav > li > a {
     color: #ddd;
