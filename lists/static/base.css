@@ -1,8 +1,9 @@
-.navbar, .navbar-header {
+.navbar {
     background-color: #f4511e;
     color: #fff;
 }
-.navbar-header {
+.navbar-brand {
+    color: #fff;
     font-family: Montserrat, sans-serif;
 }
 body {

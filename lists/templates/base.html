@@ -16,7 +16,7 @@
 <nav class="navbar navbar-default" role="navigation">
     <div class="container-fluid">
         <div class="navbar-header">
-          <a class="navbar-brand" href="/">Twoje Listy</a>
+          <a class="navbar-brand" href="/" data-toggle="tooltip" data-placement="bottom" title="Wróć do strony głównej">Twoje Listy</a>
         </div>
         {% if user.email %}
           <ul class="nav navbar-nav navbar-right">
@@ -27,9 +27,9 @@
           <form class="navbar-form navbar-right" method="POST" action="{% url 'send_login_email' %}">
               <span>Podaj adres email do zalogowania:</span>
               <div class="input-group">
-                <input class="form-control" name="email" type="text" data-toggle="tooltip" data-placement="bottom" title="podaj adres email"/>
+                <input class="form-control" name="email" type="text" data-toggle="tooltip" data-placement="bottom" title="Podaj adres email"/>
                 <div class="input-group-btn">
-                  <button class="btn btn-default" type="submit" data-toggle="tooltip" data-placement="bottom" title="zaloguj">
+                  <button class="btn btn-default" type="submit" data-toggle="tooltip" data-placement="bottom" title="Zaloguj">
                     <i class="glyphicon glyphicon-log-in"></i>
                   </button>
                 </div>
@@ -87,6 +87,7 @@
 <script src="/static/list.js"></script>
 <script>
 $(document).ready(function(){
+  $('[data-toggle="tooltip"]').tooltip();
   window.Superlists.initialize();
   window.Superlists.filter_list();
 });
