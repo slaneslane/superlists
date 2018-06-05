@@ -27,9 +27,9 @@
           <form class="navbar-form navbar-right" method="POST" action="{% url 'send_login_email' %}">
               <span>Podaj adres email do zalogowania:</span>
               <div class="input-group">
-                <input class="form-control" name="email" type="text" />
+                <input class="form-control" name="email" type="text" data-toggle="tooltip" data-placement="bottom" title="podaj adres email"/>
                 <div class="input-group-btn">
-                  <button class="btn btn-default" type="submit">
+                  <button class="btn btn-default" type="submit" data-toggle="tooltip" data-placement="bottom" title="zaloguj">
                     <i class="glyphicon glyphicon-log-in"></i>
                   </button>
                 </div>
@@ -45,9 +45,15 @@
         <div class="col-md-8 col-md-offset-2">
             {% for message in messages %}
               {% if message.level_tag == 'success' %}
-                <div class="alert alert-success">{{ message }}</div>
+                <div class="alert alert-success alert-dismissible fade in">
+                  <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                  {{ message }}
+                </div>
               {% else %}
-                <div class="alert alert-warning">{{ message }}</div>
+                <div class="alert alert-warning alert-dismissible fade in">
+                  <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                  {{ message }}
+                </div>
               {% endif %}
             {% endfor %}
         </div>

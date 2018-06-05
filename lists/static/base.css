@@ -1,12 +1,14 @@
+.navbar{
+    background-color: #f4511e;
+    color: #fff;
+}
 body {
     font: 400 15px Lato, sans-serif;
     line-height: 1.8;
     color: #818181;
 }
 .jumbotron {
-    background-color: #f4511e;
-    color: #fff;
-    padding: 100px 25px;
+    padding: 50px 25px;
     font-family: Montserrat, sans-serif;
 }
 #id_text {
