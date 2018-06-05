@@ -44,17 +44,19 @@
     </div>
 </nav>
 <div class="jumbotron">
-    <div class="text-center col-md-8 col-md-offset-2" >
-        <h1>{% block header-text %}{% endblock %}</h1>
-        <form method="POST" action="{% block form-action %}{% endblock %}">
-            {{ form.text }}
-            {% csrf_token %}
-            {% if form.errors %}
-            <div class="form-group has-error">
-                <span class="help-block">{{ form.text.errors }}</span>
-            </div>
-            {% endif %}
-        </form>
+    <div class="row">
+        <div class="text-center col-md-8 col-md-offset-2" >
+            <h1>{% block header-text %}{% endblock %}</h1>
+            <form method="POST" action="{% block form-action %}{% endblock %}">
+                {{ form.text }}
+                {% csrf_token %}
+                {% if form.errors %}
+                <div class="form-group has-error">
+                    <span class="help-block">{{ form.text.errors }}</span>
+                </div>
+                {% endif %}
+            </form>
+        </div>
     </div>
 </div>
 <div class="container">

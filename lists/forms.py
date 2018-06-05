@@ -19,6 +19,9 @@ class ItemForm(forms.models.ModelForm):
             'text': forms.fields.TextInput(attrs={
             'placeholder': 'Wpisz rzecz do zrobienia',
             'class': 'form-control input-lg',
+            'data-toggle': 'tooltip',
+            'data-placement': 'bottom',
+            'title': 'Wypełnij to pole',
             }),
         }
         error_messages = {
