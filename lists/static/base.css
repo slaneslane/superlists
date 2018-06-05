@@ -8,6 +8,9 @@ body {
     border-radius: 0;
     border: 0;
 }
+.navbar .navbar-form {
+    border: 0;
+}
 .navbar-header .navbar-brand, .navbar-form, .nav .navbar-text, .navbar-default .navbar-nav > li > a {
     color: #ddd;
     font-family: Montserrat, sans-serif;

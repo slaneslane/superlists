@@ -22,6 +22,10 @@ def send_login_email(request):
         request,
         'Sprawdź swoją skrzynkę pocztową. Wysłaliśmy Ci wiadomość z linkiem, który pozwoli Ci się zalogować.'
     )
+    messages.warning(
+        request,
+        'Niestety coś poszło nie tak. Wprowadź swój poprawny adres e-mail.'
+    )
 #    # inaczej (niestety nie współgra z mockiem):
 #    messages.add_message(
 #        request,
