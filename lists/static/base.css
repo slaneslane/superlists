@@ -1,6 +1,9 @@
-.navbar{
+.navbar, .navbar-header {
     background-color: #f4511e;
     color: #fff;
+}
+.navbar-header {
+    font-family: Montserrat, sans-serif;
 }
 body {
     font: 400 15px Lato, sans-serif;
@@ -8,6 +11,8 @@ body {
     color: #818181;
 }
 .jumbotron {
+    background-color: #f4511e;
+    color: #fff;
     padding: 50px 25px;
     font-family: Montserrat, sans-serif;
 }
