@@ -1,3 +1,5 @@
+import re
+
 from django.core.mail import send_mail
 from django.core.urlresolvers import reverse
 from django.shortcuts import redirect
@@ -5,8 +7,25 @@ from django.contrib import auth, messages
 
 from accounts.models import Token
 
+def message_success():
+    messages.success(
+        request,
+        'Sprawdź swoją skrzynkę pocztową. Wysłaliśmy Ci wiadomość z linkiem, który pozwoli Ci się zalogować.'
+    )
+
+def message_warning():
+    messages.warning(
+        request,
+        'Niestety coś poszło nie tak. Wprowadź swój poprawny adres e-mail.'
+    )
+
 def send_login_email(request):
     email = request.POST['email']
+
+    EMAIL_REGEXP = re.compile(r'/^([a-z0-9_\.-+]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/')
+    if not EMAIL_REGEXP.match(email):
+        message_warning()
+
     token = Token.objects.create(email=email)
     url = request.build_absolute_uri(
         reverse('login') + '?token=' + str(token.uid)
@@ -21,22 +40,10 @@ def send_login_email(request):
     )
 
     if send_status:
-        messages.success(
-            request,
-            'Sprawdź swoją skrzynkę pocztową. Wysłaliśmy Ci wiadomość z linkiem, który pozwoli Ci się zalogować.'
-        )
+        message_success()
     else:
-        messages.warning(
-                request,
-            'Niestety coś poszło nie tak. Wprowadź swój poprawny adres e-mail.'
-        )
-
-#    # inaczej (niestety nie współgra z mockiem):
-#    messages.add_message(
-#        request,
-#        messages.SUCCESS,
-#        'Sprawdź swoją skrzynkę pocztową. Wysłaliśmy Ci wiadomość z linkiem, który pozwoli Ci się zalogować.'
-#    )
+        message_warning()
+       
     return redirect('/')
 
 def login(request):
