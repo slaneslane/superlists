@@ -19,12 +19,21 @@ def message_warning():
         'Niestety coś poszło nie tak. Wprowadź swój poprawny adres e-mail.'
     )
 
+def ok_message(flag):
+    if flag:
+        message_success()
+    else:
+        message_warning()
+    return flag
+
+def validate_email(email):
+    EMAIL_REGEXP = re.compile(r'/^([a-z0-9_\.-+]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/')
+    return EMAIL_REGEXP.match(email)
+
 def send_login_email(request):
     email = request.POST['email']
-
-    EMAIL_REGEXP = re.compile(r'/^([a-z0-9_\.-+]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/')
-    if not EMAIL_REGEXP.match(email):
-        message_warning()
+    if not ok_message(validate_email(email)):
+        return redirect('/')
 
     token = Token.objects.create(email=email)
     url = request.build_absolute_uri(
@@ -38,12 +47,7 @@ def send_login_email(request):
         'noreply@twojelisty',
         [email]
     )
-
-    if send_status:
-        message_success()
-    else:
-        message_warning()
-       
+    ok_message(send_status)
     return redirect('/')
 
 def login(request):
