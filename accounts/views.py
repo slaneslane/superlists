@@ -7,6 +7,7 @@ from django.contrib import auth, messages
 
 from accounts.models import Token
 
+MESSAGE_STRING = 'Kliknij w poniższy link aby się zalogować w serwisie Twoje Listy:'
 NOREPLY_EMAIL = 'noreply@twojelisty'
 EMAIL_TITLE = 'Twój link do zalogowania się w serwisie Twoje Listy'
 
@@ -21,10 +22,10 @@ class UserMessage(object):
         self.__display_message()
 
     def __message_success(self):
-        messages.success(self.request, MSG_SUCCESS)
+        messages.success(self.request, self.MSG_SUCCESS)
 
     def __message_warning(self):
-        messages.warning(self.request, MSG_WARNING)
+        messages.warning(self.request, self.MSG_WARNING)
 
     def __display_message(self):
         if self.status:
@@ -33,48 +34,32 @@ class UserMessage(object):
             self.__message_warning()
 
 
-class TokenizedURL(object):
-
-    def __init__(self, base_uri, uid):
-        self.base_uri = base_uri
-        self.uid = uid
-        self.__tokenized_uri = self.__compose_tokenized_uri()
-        self.__tokenized_url = self.__compose_tokenized_url()
-
-    def __compose_tokenized_uri(self):
-        return reverse('login') + '?token=' + str(self.uid)
-
-    def __compose_tokenized_url(self):
-        return self.base_uri + self.__tokenized_uri
-
-    def get_tokenized_URL(self):
-        return self.__tokenized_url
-
 def validate_email(email):
     EMAIL_REGEXP = re.compile(r'^([\w.-]+)@([\w.-]+)$')
     return EMAIL_REGEXP.match(email)
 
+def build_tokenized_uri(uid):
+    return reverse('login') + '?token=' + str(uid)
+
+def build_tokenized_url(request, uid):
+    return request.build_absolute_uri(build_tokenized_uri(uid))
+    
+def create_message_body(url):
+    return MESSAGE_STRING + '\n\n' + url
+
+def send_link_in_message(request, uid, email):
+    message_body = create_message_body(build_tokenized_url(request, uid))
+    return send_mail(EMAIL_TITLE, message_body, NOREPLY_EMAIL, [email])
 
 def send_login_email(request):
-    send_status = false
-
+    send_status = False
     email = request.POST['email']
     if validate_email(email):
+        token = Token.objects.create(email=email)
         try:
-            token = Token.objects.create(email=email)
-
-            url = TokenizedURL(base_uri=request.build_absolute_uri(), uid=token.uid)
-            message_body = f'Kliknij w poniższy link aby się zalogować w serwisie Twoje Listy:\n\n{url.get_tokenized_URL()}'
-
-            send_status = send_mail(
-                EMAIL_TITLE,
-                message_body,
-                NOREPLY_EMAIL,
-                [email]
-            )
+            send_status = send_link_in_message(request, token.uid, email)
         except:
             pass
-
     UserMessage(request, send_status)
     return redirect('/')
 
