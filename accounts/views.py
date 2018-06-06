@@ -10,7 +10,7 @@ from accounts.models import Token
 NOREPLY_EMAIL = 'noreply@twojelisty'
 EMAIL_TITLE = 'Twój link do zalogowania się w serwisie Twoje Listy'
 
-class ProcessMessage(object):
+class UserMessage(object):
 
     MSG_SUCCESS = 'Sprawdź swoją skrzynkę pocztową. Wysłaliśmy Ci wiadomość z linkiem, który pozwoli Ci się zalogować.'
     MSG_WARNING = 'Niestety coś poszło nie tak. Wprowadź swój poprawny adres e-mail.'
@@ -33,35 +33,37 @@ class ProcessMessage(object):
             self.__message_warning()
 
 
-class URL(object):
-    def __init__(self, request, token):
-        self.request = request
-        self.token = token
-        return self.__compose_url()
+class TokenizedURL(object):
+
+    def __init__(self, base_uri, uid):
+        self.base_uri = base_uri
+        self.uid = uid
+        self.__tokenized_uri = self.__compose_tokenized_uri()
+        self.__tokenized_url = self.__compose_tokenized_url()
 
     def __compose_tokenized_uri(self):
-        return reverse('login') + '?token=' + str(self.token.uid)
+        return reverse('login') + '?token=' + str(self.uid)
 
-    def __compose_url(self):
-        return self.request.build_absolute_uri(self.__compose_tokenized_uri())
+    def __compose_tokenized_url(self):
+        return self.base_uri + self.__tokenized_uri
 
+    def get_tokenized_URL(self):
+        return self.__tokenized_url
 
 def validate_email(email):
     EMAIL_REGEXP = re.compile(r'/^([a-z0-9_\.-+]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/')
     return EMAIL_REGEXP.match(email)
-
-def compose_message_body(request, token):
-    url = URL(request=request, token=token)
-    return f'Kliknij w poniższy link aby się zalogować w serwisie Twoje Listy:\n\n{url}'
 
 
 def send_login_email(request):
     send_status = false
 
     email = request.POST['email']
-    if validate_email(email=email):
+    if validate_email(email):
         token = Token.objects.create(email=email)
-        message_body = compose_message_body(request=request, token=token)
+
+        url = TokenizedURL(base_uri=request.build_absolute_uri(), uid=token.uid)
+        message_body = f'Kliknij w poniższy link aby się zalogować w serwisie Twoje Listy:\n\n{url.get_tokenized_URL()}'
 
         send_status = send_mail(
             EMAIL_TITLE,
@@ -70,7 +72,7 @@ def send_login_email(request):
             [email]
         )
 
-    ProcessMessage(request=request, status=send_status)
+    UserMessage(request, send_status)
     return redirect('/')
 
 def login(request):
