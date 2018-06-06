@@ -51,7 +51,7 @@ class TokenizedURL(object):
         return self.__tokenized_url
 
 def validate_email(email):
-    EMAIL_REGEXP = re.compile(r'/^([a-z0-9_\.-+]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/')
+    EMAIL_REGEXP = re.compile(r'^([\w.-]+)@([\w.-]+)$')
     return EMAIL_REGEXP.match(email)
 
 
@@ -60,17 +60,20 @@ def send_login_email(request):
 
     email = request.POST['email']
     if validate_email(email):
-        token = Token.objects.create(email=email)
+        try:
+            token = Token.objects.create(email=email)
 
-        url = TokenizedURL(base_uri=request.build_absolute_uri(), uid=token.uid)
-        message_body = f'Kliknij w poniższy link aby się zalogować w serwisie Twoje Listy:\n\n{url.get_tokenized_URL()}'
+            url = TokenizedURL(base_uri=request.build_absolute_uri(), uid=token.uid)
+            message_body = f'Kliknij w poniższy link aby się zalogować w serwisie Twoje Listy:\n\n{url.get_tokenized_URL()}'
 
-        send_status = send_mail(
-            EMAIL_TITLE,
-            message_body,
-            NOREPLY_EMAIL,
-            [email]
-        )
+            send_status = send_mail(
+                EMAIL_TITLE,
+                message_body,
+                NOREPLY_EMAIL,
+                [email]
+            )
+        except:
+            pass
 
     UserMessage(request, send_status)
     return redirect('/')
