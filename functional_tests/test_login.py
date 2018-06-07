@@ -82,7 +82,7 @@ class LoginTest(FunctionalTest):
         self.wait_to_be_logged_in(email=test_email) 
 
         # Teraz się wylogowuje:
-        self.browser.find_element_by_id('log-out').click()
+        self.browser.find_element_by_link_text('Wyloguj').click()
 
         # Magda jest wylogowana.
         self.wait_to_be_logged_out(email=test_email)
