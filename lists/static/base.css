@@ -11,6 +11,9 @@ body {
 .navbar .navbar-form {
     border: 0;
 }
+.navbar-text {
+    margin-left: 15px;
+}
 .navbar-header .navbar-brand, .navbar-form, .nav .navbar-text, .navbar-default .navbar-nav > li > a {
     color: #ddd;
     font-family: Montserrat, sans-serif;
@@ -24,7 +27,7 @@ body {
 .jumbotron {
     background-color: #f4511e;
     color: #fff;
-    padding: 50px 25px;
+    padding: 0px 25px 25px;
     font-family: Montserrat, sans-serif;
 }
 #id_text {
