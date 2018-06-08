@@ -8,7 +8,7 @@ from lists.forms import ItemForm, ExistingListItemForm
 
 
 def extract_URLs(text):
-    pattern = r'(?:(?:(?:https?|ftp)://))?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!|%\$&\'\(\)\*\+,;=.]+'
+    pattern = r'(?:(?:(?:https?|ftp)://))[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!|%\$&\'\(\)\*\+,;=.]+'
     regexp = re.compile(pattern)
     return regexp.findall(text)
 
