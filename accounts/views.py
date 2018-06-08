@@ -53,7 +53,7 @@ def send_link_in_message(request, uid, email):
 
 def send_login_email(request):
     send_status = False
-    email = request.POST['email']
+    email = request.POST['email'].lower()
     if validate_email(email):
         token = Token.objects.create(email=email)
         try:
