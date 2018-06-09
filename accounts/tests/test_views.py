@@ -3,14 +3,15 @@ from unittest.mock import patch, call
 
 import accounts.views
 from accounts.models import Token
-
+from accounts.lib.utils import send_mail, EMAIL_TITLE, NOREPLY_EMAIL, UserMessage
     
 class SendLoginEmailViewTest(TestCase):
-
+    TEST_EMAIL = 'magda@naprzyklad.pl'
+    
     def test_send_login_email_redirects_to_home_page(self):
-        response = self.client.post('/accounts/send_login_email', data={
-            'email': 'magda@naprzyklad.pl'
-        })
+        response = self.client.post('/accounts/send_login_email',
+            data={'email': self.TEST_EMAIL}
+        )
         self.assertRedirects(response, '/')
 
 #    def test_sends_mail_to_address_from_post(self):
@@ -34,32 +35,26 @@ class SendLoginEmailViewTest(TestCase):
 #        self.assertEqual(self.from_email, 'noreply@twojelisty')
 #        self.assertEqual(self.to_list, ['magda@naprzyklad.pl'])
     
-
     # inaczej to samo co powyżej - używając monkeypatching:
-    @patch('accounts.views.send_mail')
+    @patch('accounts.lib.utils.send_mail')
     def test_sends_mail_to_address_from_post(self, mock_send_mail):
-        self.client.post('/accounts/send_login_email', data={
-            'email': 'magda@naprzyklad.pl'    
-        })
-
+        self.client.post('/accounts/send_login_email',
+            data={'email': self.TEST_EMAIL}
+        )
         self.assertEqual(mock_send_mail.called, True)
         (subject, body, from_email, to_list), kwargs = mock_send_mail.call_args
-        self.assertEqual(subject, 'Twój link do zalogowania się w serwisie Twoje Listy')
-        self.assertEqual(from_email, 'noreply@twojelisty')
-        self.assertEqual(to_list, ['magda@naprzyklad.pl'])
+        self.assertEqual(subject, EMAIL_TITLE)
+        self.assertEqual(from_email, NOREPLY_EMAIL)
+        self.assertEqual(to_list, [self.TEST_EMAIL])
 
     def test_adds_success_message(self):
-        response = self.client.post('/accounts/send_login_email', data={
-            'email': 'magda@naprzyklad.pl'
-        }, follow=True)
-
-        message = list(response.context['messages'])[0]
-        self.assertEqual(
-            message.message,
-            'Sprawdź swoją skrzynkę pocztową. Wysłaliśmy Ci wiadomość z linkiem, który pozwoli Ci się zalogować.'
+        response = self.client.post('/accounts/send_login_email',
+            data={'email': self.TEST_EMAIL},
+            follow=True
         )
+        message = list(response.context['messages'])[0]
+        self.assertEqual(message.message, UserMessage.MSG_SUCCESS)
         self.assertEqual(message.tags, "success")
-
 
 #    # inaczej to samo co powyżej - używając monkeypatching:
 #    @patch('accounts.views.messages')
@@ -74,26 +69,22 @@ class SendLoginEmailViewTest(TestCase):
 #            call(response.wsgi_request, expected),
 #        )
 
-
     def test_creates_token_associated_with_email(self):
-        self.client.post('/accounts/send_login_email', data={
-            'email': 'magda@naprzyklad.pl'    
-        })
-
+        self.client.post('/accounts/send_login_email',
+            data={'email': self.TEST_EMAIL}
+        )
         token = Token.objects.first()
-        self.assertEqual(token.email, 'magda@naprzyklad.pl')
+        self.assertEqual(token.email, self.TEST_EMAIL)
 
-    @patch('accounts.views.send_mail')
+    @patch('accounts.lib.utils.send_mail')
     def test_sends_link_to_login_using_token_uid(self, mock_send_mail):
-        self.client.post('/accounts/send_login_email', data={
-            'email': 'magda@naprzyklad.pl'    
-        })
-
+        self.client.post('/accounts/send_login_email',
+            data={'email': self.TEST_EMAIL}
+        )
         token = Token.objects.first()
         expected_url = f'http://testserver/accounts/login?token={token.uid}'
         (subject, body, from_email, to_list), kwargs = mock_send_mail.call_args
         self.assertIn(expected_url, body)
-
 
 
 @patch('accounts.views.auth')
