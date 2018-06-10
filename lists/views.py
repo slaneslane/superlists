@@ -17,7 +17,8 @@ class NewListView(CreateView, HomePageView):
 
     def form_valid(self, form):
         list_ = List()
-        list_.owner = self.request.user
+        if self.request.user.is_authenticated:
+            list_.owner = self.request.user
         list_.save()
         form.save(for_list=list_)
         return redirect(list_)

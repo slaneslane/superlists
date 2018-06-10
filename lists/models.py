@@ -1,9 +1,12 @@
 from django.db import models
+from django.conf import settings
 from django.core.urlresolvers import reverse
 
 from lists.lib import urls
 
 class List(models.Model):
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, blank=True, null=True)
+
     def get_absolute_url(self):
         return reverse('view_list', args=[self.id])
 
