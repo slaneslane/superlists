@@ -12,9 +12,7 @@ class LayoutAndStylingTest(FunctionalTest):
     self.element_centered('id_text', 45)
 
     # Magda tworzy nową listę.
-    self.get_item_input_box().send_keys('testowy')
-    self.get_item_input_box().send_keys(Keys.ENTER)
-    self.wait_for_row_in_list_table('1: testowy')
+    self.add_list_item('testowy')
 
     # Zauważa, że inputbox jest wciąż na środku strony.
     self.element_centered('id_text', 45)
@@ -22,14 +20,8 @@ class LayoutAndStylingTest(FunctionalTest):
   def test_list_filtering(self):
     # Magda odwiedza strone główną aplikacji i wpisuje swoje plany na listę.
     self.browser.get(self.live_server_url)
-
-    self.get_item_input_box().send_keys('Kupic pawie piora')
-    self.get_item_input_box().send_keys(Keys.ENTER)
-    self.wait_for_row_in_list_table('1: Kupic pawie piora')
-
-    self.get_item_input_box().send_keys('Uzyc pawich pior do zrobienia przynety')
-    self.get_item_input_box().send_keys(Keys.ENTER)
-    self.wait_for_row_in_list_table('2: Uzyc pawich pior do zrobienia przynety')
+    self.add_list_item('Kupic pawie piora')
+    self.add_list_item('Uzyc pawich pior do zrobienia przynety')
 
     # Po czym filtruje listę zakupów:
     self.get_item_input_box().send_keys('Kupic')

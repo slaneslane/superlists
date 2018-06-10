@@ -59,10 +59,9 @@ class LoginTest(FunctionalTest):
 
         # Pojawia się wiadomość o wysłaniu emaila na jej skrzynkę pocztową.
         self.wait_for(lambda: self.assertIn(
-                'Sprawdź swoją skrzynkę pocztową',
-                self.browser.find_element_by_tag_name('body').text
-            )
-        )
+           'Sprawdź swoją skrzynkę pocztową',
+            self.browser.find_element_by_tag_name('body').text
+        ))
 
         # Magda sprawdza swoją skrzynkę pocztową i znajduje w niej wiadomość..
         body = self.wait_for_email(test_email, SUBJECT)

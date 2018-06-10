@@ -41,9 +41,7 @@ class ItemValidationTest(FunctionalTest):
   def test_cannot_add_duplicate_items(self):
     # Magda przeszla na strone glowna i zaczela tworzyc nowa liste
     self.browser.get(self.live_server_url)
-    self.get_item_input_box().send_keys('Kupic kalosze')
-    self.get_item_input_box().send_keys(Keys.ENTER)
-    self.wait_for_row_in_list_table('1: Kupic kalosze')
+    self.add_list_item('Kupic kalosze')
 
     # Przypadkowo sprobowala wpisac element, ktory juz znajdowal sie na liscie
     self.get_item_input_box().send_keys('Kupic kalosze')
@@ -55,9 +53,7 @@ class ItemValidationTest(FunctionalTest):
   def test_error_messages_are_cleared_on_input(self):
     # Magda utworzyla nowa liste w sposob, ktory spowodowal powstanie bledu weryfikacji:
     self.browser.get(self.live_server_url)
-    self.get_item_input_box().send_keys('To jest istna loteria')
-    self.get_item_input_box().send_keys(Keys.ENTER)
-    self.wait_for_row_in_list_table('1: To jest istna loteria')
+    self.add_list_item('To jest istna loteria')
 
     # Powtórnie wpisała to samo hasło:
     self.get_item_input_box().send_keys('To jest istna loteria')
