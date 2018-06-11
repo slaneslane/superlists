@@ -11,6 +11,9 @@ body {
 .navbar .navbar-form {
     border: 0;
 }
+.navbar-brand {
+    font-size: 25px;
+}
 .navbar-text {
     margin-left: 15px;
 }
@@ -32,4 +35,7 @@ body {
 }
 #id_text {
     margin-top: 2ex;
+}
+.my-lists {
+    font-size: 20px;
 }
