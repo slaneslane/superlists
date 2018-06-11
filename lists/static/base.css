@@ -37,5 +37,16 @@ body {
     margin-top: 2ex;
 }
 .my-lists {
-    font-size: 20px;
+    display: flex;
+    justify-content: space-around;
+    padding: 0;
+    list-style: none;
+}
+.my-lists > li > a {
+    font-size: 22px;
+    color: #f4511e
+    text-decoration: none;
+}
+.my-lists > li > a:hover {
+    color: #00C
 }
