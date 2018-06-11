@@ -44,7 +44,7 @@ body {
 }
 .my-lists > li > a {
     font-size: 22px;
-    color: #f4511e
+    color: #f4511e;
     text-decoration: none;
 }
 .my-lists > li > a:hover {
