@@ -28,6 +28,8 @@ class ItemForm(forms.models.ModelForm):
             'text': {'required': EMPTY_LIST_ERROR }
         }
 
+class NewListForm(object):
+    pass
 
 class ExistingListItemForm(ItemForm):
 
