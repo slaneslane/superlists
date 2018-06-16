@@ -3,7 +3,7 @@
 {% block list_form %}{% endblock %}
 {% block extra_content %}
             <h2>Listy utworzone przez: {{ owner.email }}</h2>
-            <ul>
+            <ul class="my-lists">
             {% for list in owner.list_set.all %}
                 <li><a href="{{ list.get_absolute_url }}">{{ list.name }}</a></li>
             {% endfor %}
