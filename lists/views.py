@@ -10,13 +10,9 @@ def home_page(request):
     return render(request, 'home.html', {'form': ItemForm()})
 
 def new_list(request):
-    form = ItemForm(data=request.POST)
+    form = NewListForm(data=request.POST)
     if form.is_valid():
-        list_ = List()
-        if request.user.is_authenticated:
-            list_.owner = request.user
-        list_.save()
-        form.save(for_list=list_)
+        list_ = form.save(owner=request.user)
         return redirect(list_)
     else:
         return render(request, 'home.html', {"form": form})

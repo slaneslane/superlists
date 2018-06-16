@@ -1,8 +1,8 @@
-from django.test import TestCase
-
 import unittest
 from unittest import skip
 from unittest.mock import patch, Mock
+
+from django.test import TestCase
 
 from lists.models import Item, List
 from lists.forms import (
@@ -26,14 +26,6 @@ class ItemFormTest(TestCase):
         form = ItemForm(data={'text': ''})
         self.assertFalse(form.is_valid())
         self.assertEqual(form.errors['text'], [EMPTY_LIST_ERROR])
-
-    def test_itemform_save_handles_saving_to_a_list(self):
-        list_ = List.objects.create()
-        form = ItemForm(data={'text': 'dowolne zadanie'})
-        new_item = form.save(for_list=list_)
-        self.assertEqual(new_item, Item.objects.first())
-        self.assertEqual(new_item.text, 'dowolne zadanie' )
-        self.assertEqual(new_item.list, list_)
 
 class ExistingListItemFormTest(TestCase):
 
