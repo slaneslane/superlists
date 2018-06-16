@@ -58,6 +58,6 @@ class MyListsTest(FunctionalTest):
         # Wylogowała się. Opcja 'Moje Listy' zniknęła:
         self.browser.find_element_by_link_text('Wyloguj').click()
         self.wait_for(lambda: self.assertEqual(
-            self.browser.find_element_by_link_text('Moje Listy'),
+            self.browser.find_elements_by_link_text('Moje Listy'),
             []
         ))
