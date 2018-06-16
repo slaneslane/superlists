@@ -6,7 +6,6 @@ from lists.models import Item, List
 EMPTY_LIST_ERROR = "Element listy nie może być pusty!" 
 DUPLICATE_ITEM_ERROR = "Ten element znajduje się już na liście"
 
-
 class ItemForm(forms.models.ModelForm):
 
     class Meta:

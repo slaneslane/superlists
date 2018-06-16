@@ -17,7 +17,7 @@ def new_list(request):
     else:
         return render(request, 'home.html', {"form": form})
 
-def new_list2(request):
+def new_list(request):
     form = NewListForm(data=request.POST)
     if form.is_valid():
         list_ = form.save(owner=request.user)

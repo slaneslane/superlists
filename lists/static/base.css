@@ -2,6 +2,9 @@ body {
     font: 400 15px Lato, sans-serif;
     color: #818181;
 }
+h2 {
+    text-align: center;
+}
 .navbar {
     background-color: #f4511e;
     margin-bottom: 0;
@@ -10,6 +13,9 @@ body {
 }
 .navbar .navbar-form {
     border: 0;
+}
+.navbar-brand {
+    font-size: 25px;
 }
 .navbar-text {
     margin-left: 15px;
@@ -21,8 +27,17 @@ body {
 .navbar-header .navbar-brand:hover, .navbar-default .navbar-nav > li > a:hover {
     color: #fff;
 }
-.input-group-btn button:hover{
+.navbar-default .navbar-toggle:focus {
+    background-color: #f4511e;
+}
+.navbar-default .navbar-toggle .icon-bar,
+.navbar-default .navbar-toggle:focus .icon-bar,
+.navbar-default .navbar-toggle:hover,
+.input-group-btn button:hover {
     background-color: #fff;
+}
+.navbar-default .navbar-toggle:hover .icon-bar {
+    background-color: #f4511e;
 }
 .jumbotron {
     background-color: #f4511e;
@@ -32,4 +47,18 @@ body {
 }
 #id_text {
     margin-top: 2ex;
+}
+.my-lists {
+    text-align: center;
+    justify-content: space-around;
+    padding: 0;
+    list-style: none;
+}
+.my-lists > li > a {
+    font-size: 22px;
+    color: #f4511e;
+    text-decoration: none;
+}
+.my-lists > li > a:hover {
+    color: #00C
 }
