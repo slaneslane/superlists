@@ -36,7 +36,7 @@ class FunctionalTest(StaticLiveServerTestCase):
             reset_database(self.staging_server, os.environ.get('MY_SERVER_PORT'))
 
     def tearDown(self):
-        is self._test_has_failed():
+        if self._test_has_failed():
             if not os.path.exists(SCREEN_DUMP_LOCATION):
                 os.makedirs(SCREEN_DUMP_LOCATION)
             for ix, handle in enumerate(self.browser.window_handles):
