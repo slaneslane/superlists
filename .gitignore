@@ -5,3 +5,4 @@ geckodriver.log
 virtualenv/
 /static
 .env
+functional_tests/screendumps
