@@ -25,9 +25,9 @@ class ItemModelsTest(TestCase):
 
     def test_list_ordering(self):
         list1 = List.objects.create()
-        item1 = Item.objects.create(list=list1, text='e1')
-        item2 = Item.objects.create(list=list1, text='e2')
-        item3 = Item.objects.create(list=list1, text='e3')
+        item1 = Item.objects.create(list=list1, text='wpis1')
+        item2 = Item.objects.create(list=list1, text='wpis2')
+        item3 = Item.objects.create(list=list1, text='wpis3')
         self.assertEqual(list(Item.objects.all()), [item1, item2, item3])
 
     def test_cannot_save_empty_list_items(self):
