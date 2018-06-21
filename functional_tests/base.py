@@ -1,11 +1,21 @@
+import os
+import time
+
+from django.conf import settings
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
+from django.contrib.sessions.backends.db import SessionStore
+from django.contrib.auth import BACKEND_SESSION_KEY, SESSION_KEY, get_user_model
+
 from selenium import webdriver
 from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.common.keys import Keys
-import os
-import time
+
 from datetime import datetime
-from .server_tools import reset_database
+
+from .server_tools import reset_database, create_session_on_server
+from .management.commands.create_session import create_pre_authenticated_session
+
+User = get_user_model()
 
 MAX_WAIT = 20
 
@@ -109,3 +119,18 @@ class FunctionalTest(StaticLiveServerTestCase):
         self.get_item_input_box().send_keys(Keys.ENTER)
         item_number = num_rows + 1
         self.wait_for_row_in_list_table(f'{item_number}: {item_text}')
+
+    def create_pre_authenticated_session(self, email):
+        if self.staging_server:
+            session_key = create_session_on_server(self.staging_server, os.environ.get('MY_SERVER_PORT'), email)
+        else:
+            session_key = create_pre_authenticated_session(email)
+
+        ## aby ustawić cookie trzeba najpierw odwiedzić stronę.
+        ## 404 !
+        self.browser.get(self.live_server_url + "/404_no_such_url/")
+        self.browser.add_cookie(dict(
+            name=settings.SESSION_COOKIE_NAME,
+            value=session_key,
+            path='/',
+        ))
