@@ -229,36 +229,47 @@ class URL2TaggedLinkTest(unittest.TestCase):
 
         text = 'To jest link do strony: www.islane.pl - spróbuj!'
         url = 'www.islane.pl'
+        self.assertEqual(URL_2_tagged_link(text, url), 'To jest link do strony: <a target="_blank" href="www.islane.pl">www.islane.pl</a> - spróbuj!')
 
         text = 'To jest link do strony: http://islane.pl - spróbuj!' 
         url = 'http://islane.pl'
+        self.assertEqual(URL_2_tagged_link(text, url), 'To jest link do strony: <a target="_blank" href="http://islane.pl">http://islane.pl</a> - spróbuj!')
 
         text = 'To jest link do strony: http://www.islane.pl - spróbuj!'
         url = 'http://www.islane.pl'
+        self.assertEqual(URL_2_tagged_link(text, url), 'To jest link do strony: <a target="_blank" href="http://www.islane.pl">http://www.islane.pl</a> - spróbuj!')
 
         text = 'To jest link do strony: https://islane.pl - spróbuj!' 
         url = 'https://islane.pl'
+        self.assertEqual(URL_2_tagged_link(text, url), 'To jest link do strony: <a target="_blank" href="https://islane.pl">https://islane.pl</a> - spróbuj!')
 
         text = 'To jest link do strony: https://www.islane.pl - spróbuj!' 
         url = 'https://www.islane.pl'
+        self.assertEqual(URL_2_tagged_link(text, url), 'To jest link do strony: <a target="_blank" href="https://www.islane.pl">https://www.islane.pl</a> - spróbuj!')
 
         text = 'To jest link do strony: ftp://www.islane.pl - spróbuj!' 
         url = 'ftp://www.islane.pl'
+        self.assertEqual(URL_2_tagged_link(text, url), 'To jest link do strony: <a target="_blank" href="ftp://www.islane.pl">ftp://www.islane.pl</a> - spróbuj!')
 
         text = 'To jest link do strony: 12.34.567.89 - spróbuj!' 
         url = '12.34.567.89'
+        self.assertEqual(URL_2_tagged_link(text, url), 'To jest link do strony: <a target="_blank" href="12.34.567.89">12.34.567.89</a> - spróbuj!')
 
         text = 'To jest link do strony: http://12.34.567.89 - spróbuj!'
         url = 'http://12.34.567.89'
+        self.assertEqual(URL_2_tagged_link(text, url), 'To jest link do strony: <a target="_blank" href="http://12.34.567.89">http://12.34.567.89</a> - spróbuj!')
 
         text = 'To jest link do strony: 12.34.567.89:98765 - spróbuj!'
         url = '12.34.567.89:98765'
+        self.assertEqual(URL_2_tagged_link(text, url), 'To jest link do strony: <a target="_blank" href="12.34.567.89:98765">12.34.567.89:98765</a> - spróbuj!')
 
         text = 'To jest link do strony: http://12.34.567.89:98765 - spróbuj!'
         url = 'http://12.34.567.89:98765'
+        self.assertEqual(URL_2_tagged_link(text, url), 'To jest link do strony: <a target="_blank" href="http://12.34.567.89:98765">http://12.34.567.89:98765</a> - spróbuj!')
 
         text = 'To jest link do strony: http://islane.pl/accounts/login?token=87979-56356-53645 - spróbuj!'
         url = 'http://islane.pl/accounts/login?token=87979-56356-53645'
+        self.assertEqual(URL_2_tagged_link(text, url), 'To jest link do strony: <a target="_blank" href="http://islane.pl/accounts/login%3Ftoken=87979-56356-53645">http://islane.pl/accounts/login?token=87979-56356-53645</a> - spróbuj!')
 
 
 def main():
